@@ -41,6 +41,11 @@ if (userDrafts.length === 0) {
                 Open Draft
             </button>
 
+            <button class="publish-draft-btn"
+                    data-id="${draft.id}">
+                Publish
+            </button>
+
             <button class="delete-draft-btn"
                     data-id="${draft.id}">
                 Delete
@@ -97,8 +102,97 @@ if (userDrafts.length === 0) {
 
             window.location.reload();
 
+
         });
 
-    });
+        });
+
+        document.querySelectorAll(".publish-draft-btn").forEach(button => {
+
+            button.addEventListener("click", () => {
+
+                const draftId =
+                    button.dataset.id;
+
+                let drafts =
+                    JSON.parse(
+                        localStorage.getItem("pixel_drafts")
+                    ) || [];
+
+
+                const draft =
+                    drafts.find(
+                        item =>
+                            item.id === draftId &&
+                            item.owner === currentUser
+                    );
+
+
+                if (!draft) {
+
+                    alert("Draft not found.");
+
+                    return;
+                }
+
+
+                let publishedArtworks =
+                    JSON.parse(
+                        localStorage.getItem("pixel_artworks")
+                    ) || [];
+
+
+                const alreadyPublished =
+                    publishedArtworks.some(
+                        artwork =>
+                            artwork.draftId === draft.id
+                    );
+
+
+                if (alreadyPublished) {
+
+                    alert("This artwork is already published.");
+
+                    return;
+                }
+
+
+                const artwork = {
+
+                    id: Date.now().toString(),
+
+                    draftId: draft.id,
+
+                    owner: currentUser,
+
+                    title: draft.title,
+
+                    rows: draft.rows,
+
+                    cols: draft.cols,
+
+                    matrix: draft.matrix,
+
+                    publishedAt:
+                        new Date().toISOString()
+                };
+
+
+                publishedArtworks.push(artwork);
+
+
+                localStorage.setItem(
+                    "pixel_artworks",
+                    JSON.stringify(
+                        publishedArtworks
+                    )
+                );
+
+
+                alert("Artwork published!");
+
+            });
+
+        });
 }
 

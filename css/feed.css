@@ -1,0 +1,149 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    font-family: "Roboto Mono", monospace;
+}
+
+
+body {
+    background-color: #f4c531;
+}
+
+
+nav {
+    background: #ffffff;
+
+    padding: 15px 30px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    border-bottom: 4px solid #000;
+}
+
+
+nav h1 {
+    font-size: 22px;
+}
+
+
+nav ul {
+    display: flex;
+
+    list-style: none;
+
+    gap: 20px;
+}
+
+
+nav a {
+    text-decoration: none;
+
+    color: #000;
+
+    font-weight: bold;
+}
+
+
+.feed-wrapper {
+
+    width: 80%;
+
+    max-width: 1000px;
+
+    margin: 30px auto;
+
+    padding: 30px;
+
+    background-color: #ffffff;
+
+    border: 4px solid #000;
+
+    border-radius: 8px;
+
+    box-shadow: 8px 8px 0 #000;
+}
+
+
+.feed-wrapper h2 {
+    margin-bottom: 25px;
+}
+
+
+#feed-container {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fill, minmax(280px, 1fr));
+
+    gap: 25px;
+}
+
+
+.artwork-card {
+
+    padding: 20px;
+
+    border: 3px solid #000;
+
+    border-radius: 6px;
+
+    background-color: #ffffff;
+
+    box-shadow: 5px 5px 0 #000;
+}
+
+
+.artwork-card h3 {
+    margin-bottom: 8px;
+}
+
+
+.artwork-card .author {
+    font-size: 13px;
+
+    margin-bottom: 15px;
+
+    color: #555;
+}
+
+
+.artwork-preview {
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    padding: 15px;
+
+    background-color: #eee;
+
+    border: 2px dashed #000;
+
+    overflow: auto;
+}
+
+
+.artwork-preview canvas {
+
+    image-rendering: pixelated;
+
+    max-width: 100%;
+
+    height: auto;
+}
+
+
+.empty-feed {
+
+    text-align: center;
+
+    padding: 40px;
+
+    border: 2px dashed #000;
+}

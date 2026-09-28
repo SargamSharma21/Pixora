@@ -115,3 +115,23 @@ nav a {
     background-color: #ff6b6b;
     box-shadow: 3px 3px 0 #000;
 }
+
+.publish-draft-btn {
+    margin-top: 10px;
+    margin-left: 8px;
+
+    background-color: #ffffff;
+
+    border: 2px solid #000;
+    border-radius: 5px;
+
+    padding: 8px 12px;
+
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.publish-draft-btn:hover {
+    background-color: #f4c531;
+    box-shadow: 3px 3px 0 #000;
+}
