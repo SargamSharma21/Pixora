@@ -6,6 +6,16 @@ const loginBtn = document.getElementById("login-btn");
 
 const authMsg = document.getElementById("auth-msg");
 
+function getUsers() {
+    try {
+        const users = JSON.parse(localStorage.getItem("pixel_users") || "{}");
+        return users && typeof users === "object" && !Array.isArray(users)
+            ? users
+            : {};
+    } catch {
+        return {};
+    }
+}
 
 // Register
 registerBtn.addEventListener("click", () => {
@@ -21,8 +31,7 @@ registerBtn.addEventListener("click", () => {
         return;
     }
 
-    let users =
-        JSON.parse(localStorage.getItem("pixel_users")) || {};
+    const users = getUsers();
 
     if (users[username]) {
 
@@ -51,8 +60,7 @@ loginBtn.addEventListener("click", () => {
     const username = usernameInput.value.trim();
     const password = passwordInput.value.trim();
 
-    let users =
-        JSON.parse(localStorage.getItem("pixel_users")) || {};
+    const users = getUsers();
 
     if (
         users[username] &&

@@ -31,14 +31,19 @@ if (userDrafts.length === 0) {
             document.createElement("div");
 
         card.classList.add("draft-card");
-
         card.innerHTML = `
             <h3>${draft.title}</h3>
+
             <p>Size: ${draft.rows} × ${draft.cols}</p>
 
             <button class="open-draft-btn"
                     data-id="${draft.id}">
                 Open Draft
+            </button>
+
+            <button class="delete-draft-btn"
+                    data-id="${draft.id}">
+                Delete
             </button>
         `;
 
@@ -53,6 +58,45 @@ if (userDrafts.length === 0) {
 
             window.location.href =
                 `index.html?draftId=${draftId}`;
+        });
+
+    });
+
+    document.querySelectorAll(".delete-draft-btn").forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            const draftId =
+                button.dataset.id;
+
+            const confirmDelete =
+                confirm("Are you sure you want to delete this draft?");
+
+            if (!confirmDelete) {
+                return;
+            }
+
+            let drafts =
+                JSON.parse(
+                    localStorage.getItem("pixel_drafts")
+                ) || [];
+
+            drafts =
+                drafts.filter(
+                    draft =>
+                        !(
+                            draft.id === draftId &&
+                            draft.owner === currentUser
+                        )
+                );
+
+            localStorage.setItem(
+                "pixel_drafts",
+                JSON.stringify(drafts)
+            );
+
+            window.location.reload();
+
         });
 
     });

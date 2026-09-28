@@ -290,7 +290,7 @@ saveDraftBtn.addEventListener("click", () => {
         ) || [];
 
 
-    // Updating an existing draft
+    // Update existing draft
     if (currentDraftId) {
 
         const draftIndex =
@@ -308,7 +308,6 @@ saveDraftBtn.addEventListener("click", () => {
             drafts[draftIndex].cols = cols;
             drafts[draftIndex].matrix = matrix;
 
-
             localStorage.setItem(
                 "pixel_drafts",
                 JSON.stringify(drafts)
@@ -321,7 +320,7 @@ saveDraftBtn.addEventListener("click", () => {
     }
 
 
-    // Creating a new draft
+    // Create new draft
     const draftData = {
 
         id: Date.now().toString(),
@@ -340,21 +339,17 @@ saveDraftBtn.addEventListener("click", () => {
 
     drafts.push(draftData);
 
-
     localStorage.setItem(
         "pixel_drafts",
         JSON.stringify(drafts)
     );
 
-
     currentDraftId =
         draftData.id;
-
 
     alert("Draft saved!");
 
 });
-
 // Load initial grid or saved draft
 window.addEventListener("load", () => {
 
