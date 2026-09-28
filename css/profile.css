@@ -107,3 +107,55 @@ nav a {
     color: #555;
 
 }
+
+.profile-form {
+    margin-top: 25px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+.profile-form input,
+.profile-form textarea {
+    width: 100%;
+
+    padding: 10px;
+
+    border: 2px solid #000;
+    border-radius: 5px;
+
+    font-family: "Roboto Mono", monospace;
+}
+
+.profile-form textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.hidden {
+    display: none;
+}
+
+#edit-profile-btn,
+#save-profile-btn {
+    margin-top: 20px;
+
+    background-color: #f4c531;
+
+    border: 2px solid #000;
+    border-radius: 5px;
+
+    padding: 8px 12px;
+
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#edit-profile-btn:hover,
+#save-profile-btn:hover {
+    transform: translate(-1px, -1px);
+
+    box-shadow: 3px 3px 0 #000;
+}
