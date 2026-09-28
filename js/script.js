@@ -16,7 +16,7 @@ const heightValue = document.getElementById("height-value");
 const clearBtn = document.getElementById("clear-btn");
 const titleInput = document.getElementById("artwork-title");
 const userDisplay = document.getElementById("user-display");
-
+const saveDraftBtn = document.getElementById("save-draft-btn");
 
 
 // Canvas setup
@@ -34,12 +34,13 @@ let currentDraftId = null;
 
 const CELL_SIZE = 20;
 
+
 // Store pixel colors
 let matrix = [];
 
 
 // Create the pixel grid
-function createGrid(r, c) {
+function createGrid(r, c, savedGrid = null) {
 
     rows = parseInt(r);
     cols = parseInt(c);
@@ -47,11 +48,21 @@ function createGrid(r, c) {
     canvas.width = cols * CELL_SIZE;
     canvas.height = rows * CELL_SIZE;
 
-    // Create empty matrix
-    matrix = Array.from(
-        { length: rows },
-        () => Array(cols).fill("transparent")
-    );
+    if (
+        savedGrid &&
+        savedGrid.length === rows &&
+        savedGrid[0].length === cols
+    ) {
+
+        matrix = savedGrid;
+
+    } else {
+
+        matrix = Array.from(
+            { length: rows },
+            () => Array(cols).fill("transparent")
+        );
+    }
 
     renderCanvas();
 }
@@ -125,7 +136,8 @@ function getCellFromCoordinates(e) {
 // Paint a pixel
 function paintCell(e) {
 
-    const { row, col } = getCellFromCoordinates(e);
+    const { row, col } =
+        getCellFromCoordinates(e);
 
     if (
         row >= 0 &&
@@ -145,12 +157,14 @@ function paintCell(e) {
     }
 }
 
+
 // Mouse painting
 canvas.addEventListener("mousedown", (e) => {
 
     draw = true;
 
     paintCell(e);
+
 });
 
 
@@ -159,6 +173,7 @@ canvas.addEventListener("mousemove", (e) => {
     if (!draw) return;
 
     paintCell(e);
+
 });
 
 
@@ -203,6 +218,8 @@ gridHeight.addEventListener("input", () => {
 
 });
 
+
+// Erase mode
 eraseBtn.addEventListener("click", () => {
 
     erase = true;
@@ -213,6 +230,7 @@ eraseBtn.addEventListener("click", () => {
 });
 
 
+// Paint mode
 paintBtn.addEventListener("click", () => {
 
     erase = false;
@@ -222,6 +240,8 @@ paintBtn.addEventListener("click", () => {
 
 });
 
+
+// Clear grid
 clearBtn.addEventListener("click", () => {
 
     matrix = Array.from(
@@ -233,12 +253,8 @@ clearBtn.addEventListener("click", () => {
 
 });
 
-titleInput.addEventListener("input", () => {
 
-    artworkTitle = titleInput.value.trim();
-
-});
-
+// Artwork title
 titleInput.addEventListener("input", () => {
 
     if (titleInput.value.length > 50) {
@@ -247,28 +263,65 @@ titleInput.addEventListener("input", () => {
             titleInput.value.substring(0, 50);
     }
 
-    artworkTitle = titleInput.value.trim();
+    artworkTitle =
+        titleInput.value.trim();
 
 });
 
+
+// Display logged-in user
 if (currentUser) {
+
     userDisplay.innerText =
         `Welcome, ${currentUser}`;
+
 }
 
 
-const saveDraftBtn =
-    document.getElementById("save-draft-btn");
-
-
+// Save draft
 saveDraftBtn.addEventListener("click", () => {
 
     const title =
         titleInput.value.trim() || "Untitled Draft";
 
     let drafts =
-        JSON.parse(localStorage.getItem("pixel_drafts")) || [];
+        JSON.parse(
+            localStorage.getItem("pixel_drafts")
+        ) || [];
 
+
+    // Updating an existing draft
+    if (currentDraftId) {
+
+        const draftIndex =
+            drafts.findIndex(
+                draft =>
+                    draft.id === currentDraftId &&
+                    draft.owner === currentUser
+            );
+
+
+        if (draftIndex !== -1) {
+
+            drafts[draftIndex].title = title;
+            drafts[draftIndex].rows = rows;
+            drafts[draftIndex].cols = cols;
+            drafts[draftIndex].matrix = matrix;
+
+
+            localStorage.setItem(
+                "pixel_drafts",
+                JSON.stringify(drafts)
+            );
+
+            alert("Draft updated!");
+
+            return;
+        }
+    }
+
+
+    // Creating a new draft
     const draftData = {
 
         id: Date.now().toString(),
@@ -284,18 +337,106 @@ saveDraftBtn.addEventListener("click", () => {
         matrix: matrix
     };
 
+
     drafts.push(draftData);
+
 
     localStorage.setItem(
         "pixel_drafts",
         JSON.stringify(drafts)
     );
 
-    currentDraftId = draftData.id;
+
+    currentDraftId =
+        draftData.id;
+
 
     alert("Draft saved!");
+
 });
-// Initial grid
-createGrid(16, 16);
+
+// Load initial grid or saved draft
+window.addEventListener("load", () => {
+
+    const urlParams =
+        new URLSearchParams(
+            window.location.search
+        );
+
+    const draftId =
+        urlParams.get("draftId");
+
+
+    // No draft selected
+    if (!draftId) {
+
+        createGrid(16, 16);
+
+        return;
+    }
+
+
+    // Get saved drafts
+    const drafts =
+        JSON.parse(
+            localStorage.getItem("pixel_drafts")
+        ) || [];
+
+
+    // Find current user's draft
+    const draft =
+        drafts.find(
+            d =>
+                d.id === draftId &&
+                d.owner === currentUser
+        );
+
+
+    // Draft not found
+    if (!draft) {
+
+        createGrid(16, 16);
+
+        return;
+    }
+
+
+    // Restore draft
+    currentDraftId =
+        draft.id;
+
+    titleInput.value =
+        draft.title;
+
+    artworkTitle =
+        draft.title;
+
+
+    gridWidth.value =
+        draft.cols;
+
+    gridHeight.value =
+        draft.rows;
+
+
+    widthValue.innerText =
+        draft.cols < 10
+            ? `0${draft.cols}`
+            : draft.cols;
+
+    heightValue.innerText =
+        draft.rows < 10
+            ? `0${draft.rows}`
+            : draft.rows;
+
+
+    createGrid(
+        draft.rows,
+        draft.cols,
+        draft.matrix
+    );
+
+});
+
 
 paintBtn.classList.add("selected");

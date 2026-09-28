@@ -52,7 +52,7 @@ if (userDrafts.length === 0) {
             const draftId = button.dataset.id;
 
             window.location.href =
-                `index.html?draft=${draftId}`;
+                `index.html?draftId=${draftId}`;
         });
 
     });
