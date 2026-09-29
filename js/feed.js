@@ -3,17 +3,12 @@ const currentUser =
 
 
 if (!currentUser) {
-
-    window.location.href =
-        "login.html";
-
+    window.location.href = "login.html";
 }
 
 
 const feedContainer =
-    document.getElementById(
-        "feed-container"
-    );
+    document.getElementById("feed-container");
 
 
 const artworks =
@@ -46,12 +41,20 @@ if (artworks.length === 0) {
 
 function createArtworkCard(artwork) {
 
+    // Make sure older artworks have a likes array
+    if (!Array.isArray(artwork.likes)) {
+        artwork.likes = [];
+    }
+
+
     const card =
         document.createElement("div");
 
-    card.classList.add(
-        "artwork-card"
-    );
+    card.classList.add("artwork-card");
+
+
+    const likedByCurrentUser =
+        artwork.likes.includes(currentUser);
 
 
     card.innerHTML = `
@@ -70,14 +73,53 @@ function createArtworkCard(artwork) {
 
         </div>
 
+        <div class="artwork-actions">
+
+            <button
+                class="like-btn ${likedByCurrentUser ? "liked" : ""}"
+                data-id="${artwork.id}"
+            >
+                ${likedByCurrentUser ? "❤️" : "♡"}
+                <span class="like-count">
+                    ${artwork.likes.length}
+                </span>
+            </button>
+
+        </div>
     `;
 
 
     feedContainer.appendChild(card);
 
 
-    const canvas =
-        card.querySelector("canvas");
+    // Render artwork
+    renderArtwork(
+        card.querySelector("canvas"),
+        artwork
+    );
+
+
+    // Like button
+    const likeButton =
+        card.querySelector(".like-btn");
+
+
+    likeButton.addEventListener(
+        "click",
+        () => {
+
+            toggleLike(
+                artwork,
+                likeButton
+            );
+
+        }
+    );
+
+}
+
+
+function renderArtwork(canvas, artwork) {
 
     const ctx =
         canvas.getContext("2d");
@@ -115,15 +157,10 @@ function createArtworkCard(artwork) {
                     color;
 
                 ctx.fillRect(
-
                     col * CELL_SIZE,
-
                     row * CELL_SIZE,
-
                     CELL_SIZE,
-
                     CELL_SIZE
-
                 );
 
             }
@@ -135,19 +172,68 @@ function createArtworkCard(artwork) {
             ctx.lineWidth = 1;
 
             ctx.strokeRect(
-
                 col * CELL_SIZE,
-
                 row * CELL_SIZE,
-
                 CELL_SIZE,
-
                 CELL_SIZE
-
             );
 
         }
+    }
+}
+
+
+function toggleLike(artwork, likeButton) {
+
+    const userIndex =
+        artwork.likes.indexOf(
+            currentUser
+        );
+
+
+    if (userIndex === -1) {
+
+        // Like
+        artwork.likes.push(
+            currentUser
+        );
+
+    } else {
+
+        // Unlike
+        artwork.likes.splice(
+            userIndex,
+            1
+        );
 
     }
 
+
+    // Save updated artworks
+    localStorage.setItem(
+        "pixel_artworks",
+        JSON.stringify(artworks)
+    );
+
+
+    // Update button
+    const isLiked =
+        artwork.likes.includes(
+            currentUser
+        );
+
+
+    likeButton.classList.toggle(
+        "liked",
+        isLiked
+    );
+
+
+    likeButton.innerHTML = `
+        ${isLiked ? "❤️" : "♡"}
+
+        <span class="like-count">
+            ${artwork.likes.length}
+        </span>
+    `;
 }
