@@ -187,3 +187,103 @@ nav a {
 .like-count {
     margin-left: 5px;
 }
+
+.comments-section {
+    margin-top: 20px;
+
+    border-top: 2px solid #000;
+
+    padding-top: 15px;
+}
+
+
+.comments-section h4 {
+    margin-bottom: 12px;
+}
+
+
+.comments-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+    margin-bottom: 15px;
+}
+
+
+.comment {
+    padding: 8px;
+
+    background-color: #f4f4f4;
+
+    border: 1px solid #000;
+
+    border-radius: 4px;
+
+    font-size: 13px;
+}
+
+
+.comment strong {
+    margin-right: 6px;
+}
+
+
+.comment span {
+    word-break: break-word;
+}
+
+
+.no-comments {
+    font-size: 13px;
+
+    color: #777;
+
+    margin-bottom: 10px;
+}
+
+
+.comment-form {
+    display: flex;
+
+    gap: 8px;
+}
+
+
+.comment-input {
+    flex: 1;
+
+    min-width: 0;
+
+    padding: 8px;
+
+    border: 2px solid #000;
+
+    border-radius: 5px;
+
+    font-family: "Roboto Mono", monospace;
+}
+
+
+.comment-btn {
+    background-color: #f4c531;
+
+    border: 2px solid #000;
+
+    border-radius: 5px;
+
+    padding: 8px 12px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+
+.comment-btn:hover {
+    transform: translate(-1px, -1px);
+
+    box-shadow: 3px 3px 0 #000;
+}
