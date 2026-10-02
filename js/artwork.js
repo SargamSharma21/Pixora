@@ -98,16 +98,33 @@ function renderArtworkPage(artwork) {
                 id="like-btn"
                 class="like-btn ${liked ? "liked" : ""}"
             >
+            <div class="artwork-actions">
 
-                ${liked ? "❤️" : "♡"}
+    <div class="artwork-actions">
 
-                <span id="like-count">
-                    ${artwork.likes.length}
-                </span>
+            <button
+                id="like-btn"
+                class="like-btn ${liked ? "liked" : ""}"
+            >
+
+            ${liked ? "❤️" : "♡"}
+
+            <span id="like-count">
+                ${artwork.likes.length}
+            </span>
 
             </button>
 
-        </div>
+        ${artwork.owner === currentUser ? `
+            <button
+                id="delete-artwork-btn"
+                class="delete-artwork-btn"
+            >
+                Delete Artwork
+            </button>
+        ` : ""}
+
+    </div>
 
 
         <div class="comments-section">
@@ -161,6 +178,10 @@ function renderArtworkPage(artwork) {
 
 
     setupComments(
+        artwork
+    );
+
+    setupDelete(
         artwork
     );
 
@@ -457,6 +478,74 @@ function saveArtworks() {
         JSON.stringify(
             artworks
         )
+    );
+
+}
+
+function setupDelete(artwork) {
+
+    const deleteButton =
+        document.getElementById(
+            "delete-artwork-btn"
+        );
+
+
+    if (!deleteButton) {
+        return;
+    }
+
+
+    deleteButton.addEventListener(
+        "click",
+        () => {
+
+            const confirmed =
+                confirm(
+                    "Are you sure you want to delete this artwork?"
+                );
+
+
+            if (!confirmed) {
+                return;
+            }
+
+
+            const artworkIndex =
+                artworks.findIndex(
+                    item =>
+                        item.id === artwork.id &&
+                        item.owner === currentUser
+                );
+
+
+            if (artworkIndex === -1) {
+
+                alert(
+                    "You cannot delete this artwork."
+                );
+
+                return;
+            }
+
+
+            artworks.splice(
+                artworkIndex,
+                1
+            );
+
+
+            saveArtworks();
+
+
+            alert(
+                "Artwork deleted successfully."
+            );
+
+
+            window.location.href =
+                "feed.html";
+
+        }
     );
 
 }
