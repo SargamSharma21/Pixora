@@ -17,7 +17,7 @@ const clearBtn = document.getElementById("clear-btn");
 const titleInput = document.getElementById("artwork-title");
 const userDisplay = document.getElementById("user-display");
 const saveDraftBtn = document.getElementById("save-draft-btn");
-
+const publishBtn = document.getElementById("publish-btn");
 
 // Canvas setup
 const canvas = document.getElementById("pixel-canvas");
@@ -433,5 +433,69 @@ window.addEventListener("load", () => {
 
 });
 
+publishBtn.addEventListener("click", () => {
+
+    const title =
+        titleInput.value.trim() || "Untitled Artwork";
+
+
+    let artworks =
+        JSON.parse(
+            localStorage.getItem("pixel_artworks")
+        ) || [];
+
+
+    const artwork = {
+
+        id:
+            Date.now().toString(),
+
+        owner:
+            currentUser,
+
+        title:
+            title,
+
+        rows:
+            rows,
+
+        cols:
+            cols,
+
+        matrix:
+            matrix.map(row => [...row]),
+
+        likes:
+            [],
+
+        comments:
+            [],
+
+        publishedAt:
+            new Date().toISOString()
+
+    };
+
+
+    artworks.push(
+        artwork
+    );
+
+
+    localStorage.setItem(
+        "pixel_artworks",
+        JSON.stringify(
+            artworks
+        )
+    );
+
+
+    alert("Artwork published!");
+
+
+    window.location.href =
+        `artwork.html?id=${artwork.id}`;
+
+});
 
 paintBtn.classList.add("selected");

@@ -71,7 +71,10 @@ function createArtworkCard(artwork) {
             Created by ${artwork.owner}
         </p>
 
-        <div class="artwork-preview">
+        <div
+            class="artwork-preview artwork-clickable"
+            data-id="${artwork.id}"
+        >
 
             <canvas></canvas>
 
@@ -124,6 +127,21 @@ function createArtworkCard(artwork) {
 
     feedContainer.appendChild(card);
 
+    const artworkPreview =
+        card.querySelector(
+            ".artwork-clickable"
+        );
+
+
+        artworkPreview.addEventListener(
+            "click",
+            () => {
+
+                window.location.href =
+                    `artwork.html?id=${artwork.id}`;
+
+            }
+        );
 
     // Render artwork
     renderArtwork(
