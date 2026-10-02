@@ -45,15 +45,22 @@ const bioInput =
         "bio-input"
     );
 
+const artworkGrid =
+    document.getElementById(
+        "profile-artwork-grid"
+    );
 
-// Get stored profiles
+
+// -------------------------
+// PROFILE DATA
+// -------------------------
+
 let profiles =
     JSON.parse(
         localStorage.getItem("pixel_profiles")
     ) || {};
 
 
-// Create profile if it doesn't exist
 if (!profiles[currentUser]) {
 
     profiles[currentUser] = {
@@ -63,6 +70,7 @@ if (!profiles[currentUser]) {
         bio: "Pixel artist"
 
     };
+
 
     localStorage.setItem(
         "pixel_profiles",
@@ -76,7 +84,6 @@ let currentProfile =
     profiles[currentUser];
 
 
-// Display profile
 usernameElement.innerText =
     currentProfile.username;
 
@@ -84,7 +91,10 @@ bioElement.innerText =
     currentProfile.bio;
 
 
-// Open edit form
+// -------------------------
+// EDIT PROFILE
+// -------------------------
+
 editProfileBtn.addEventListener(
     "click",
     () => {
@@ -103,7 +113,10 @@ editProfileBtn.addEventListener(
 );
 
 
-// Save profile
+// -------------------------
+// SAVE PROFILE
+// -------------------------
+
 saveProfileBtn.addEventListener(
     "click",
     () => {
@@ -122,6 +135,7 @@ saveProfileBtn.addEventListener(
             );
 
             return;
+
         }
 
 
@@ -154,7 +168,181 @@ saveProfileBtn.addEventListener(
         );
 
 
-        alert("Profile updated!");
+        alert(
+            "Profile updated!"
+        );
 
     }
 );
+
+
+// -------------------------
+// LOAD PUBLISHED ARTWORK
+// -------------------------
+
+const artworks =
+    JSON.parse(
+        localStorage.getItem("pixel_artworks")
+    ) || [];
+
+
+const userArtworks =
+    artworks.filter(
+        artwork =>
+            artwork.owner === currentUser
+    );
+
+
+if (userArtworks.length === 0) {
+
+    artworkGrid.innerHTML = `
+        <p class="no-artwork">
+            You haven't published any artwork yet.
+        </p>
+    `;
+
+} else {
+
+    userArtworks
+        .slice()
+        .reverse()
+        .forEach(
+            artwork => {
+
+                createArtworkPreview(
+                    artwork
+                );
+
+            }
+        );
+
+}
+
+
+// -------------------------
+// CREATE ARTWORK PREVIEW
+// -------------------------
+
+function createArtworkPreview(
+    artwork
+) {
+
+    const card =
+        document.createElement(
+            "div"
+        );
+
+
+    card.classList.add(
+        "profile-artwork-card"
+    );
+
+
+    card.innerHTML = `
+
+        <canvas></canvas>
+
+        <h4>
+            ${artwork.title}
+        </h4>
+
+        <p>
+            ❤️ ${artwork.likes?.length || 0}
+        </p>
+
+    `;
+
+
+    artworkGrid.appendChild(
+        card
+    );
+
+
+    const canvas =
+        card.querySelector(
+            "canvas"
+        );
+
+
+    renderArtwork(
+        canvas,
+        artwork
+    );
+
+}
+
+
+// -------------------------
+// RENDER ARTWORK
+// -------------------------
+
+function renderArtwork(
+    canvas,
+    artwork
+) {
+
+    const ctx =
+        canvas.getContext("2d");
+
+
+    const CELL_SIZE = 12;
+
+
+    canvas.width =
+        artwork.cols * CELL_SIZE;
+
+    canvas.height =
+        artwork.rows * CELL_SIZE;
+
+
+    for (
+        let row = 0;
+        row < artwork.rows;
+        row++
+    ) {
+
+        for (
+            let col = 0;
+            col < artwork.cols;
+            col++
+        ) {
+
+            const color =
+                artwork.matrix[row][col];
+
+
+            if (
+                color !== "transparent"
+            ) {
+
+                ctx.fillStyle =
+                    color;
+
+                ctx.fillRect(
+                    col * CELL_SIZE,
+                    row * CELL_SIZE,
+                    CELL_SIZE,
+                    CELL_SIZE
+                );
+
+            }
+
+
+            ctx.strokeStyle =
+                "#ddd";
+
+            ctx.lineWidth = 1;
+
+
+            ctx.strokeRect(
+                col * CELL_SIZE,
+                row * CELL_SIZE,
+                CELL_SIZE,
+                CELL_SIZE
+            );
+
+        }
+
+    }
+
+}
