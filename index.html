@@ -1,84 +1,401 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>PIXORA</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <link rel="stylesheet" href="css/style.css">
+    <title>Pixel Studio</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap"
+        rel="stylesheet"
+    >
+
 </head>
+
 
 <body>
 
+    <!-- ================= NAVBAR ================= -->
+
     <nav>
-        <h1>👾 PIXORA</h1>
+
+        <h1>👾 PIXEL STUDIO</h1>
 
         <ul>
-            <li><a href="index.html">Studio</a></li>
-            <li><a href="feed.html">Feed</a></li>
-            <li><a href="draft.html">My Drafts</a></li>
-            <li><a href="profile.html">Profile</a></li>
-            <li><span id="user-display"></span></li>
-        </ul>  
-        
+
+            <li>
+                <a href="index.html">
+                    Studio
+                </a>
+            </li>
+
+            <li>
+                <a href="feed.html">
+                    Public Feed
+                </a>
+            </li>
+
+            <li>
+                <a href="draft.html">
+                    My Drafts
+                </a>
+            </li>
+
+            <li>
+                <button id="logout-btn">
+                    Logout
+                </button>
+            </li>
+
+        </ul>
+
     </nav>
+
+
+    <!-- ================= MAIN EDITOR ================= -->
 
     <main class="wrapper">
 
-        <h2>Pixel Art Studio</h2>
+
+        <!-- HEADER -->
+
+        <div class="editor-header">
+
+            <div>
+
+                <p class="eyebrow">
+                    PIXEL EDITOR
+                </p>
+
+                <h2>
+                    Create something.
+                </h2>
+
+            </div>
+
+            <span id="user-display"></span>
+
+        </div>
+
+
+        <!-- ================= TITLE ================= -->
 
         <div class="title-meta">
+
+            <label for="artwork-title">
+                Artwork name
+            </label>
+
             <input
                 type="text"
                 id="artwork-title"
+                maxlength="50"
                 placeholder="Name your artwork..."
             >
+
         </div>
 
-        <div class="options">
 
-            <div class="slider">
-                <label for="width-range">Grid Width</label>
-                <input
-                    type="range"
-                    id="width-range"
-                    min="1"
-                    max="35"
-                    value="16"
-                >
-                <span id="width-value">16</span>
+        <!-- ================= GRID ================= -->
+
+        <section class="editor-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h3>
+                        Grid
+                    </h3>
+
+                    <span>
+                        Canvas size
+                    </span>
+
+                </div>
+
             </div>
 
+
+            <div class="grid-settings">
+
+
+                <!-- WIDTH -->
+
+                <div class="slider-control">
+
+                    <label for="width-range">
+                        Width
+                    </label>
+
+                    <input
+                        type="range"
+                        id="width-range"
+                        min="1"
+                        max="35"
+                        value="16"
+                    >
+
+                    <span id="width-value">
+                        16
+                    </span>
+
+                </div>
+
+
+                <!-- HEIGHT -->
+
+                <div class="slider-control">
+
+                    <label for="height-range">
+                        Height
+                    </label>
+
+                    <input
+                        type="range"
+                        id="height-range"
+                        min="1"
+                        max="35"
+                        value="16"
+                    >
+
+                    <span id="height-value">
+                        16
+                    </span>
+
+                </div>
+
+            </div>
+            
             <div class="slider">
-                <label for="height-range">Grid Height</label>
+                <label for="pixel-size-range">Pixel Size</label>
+
                 <input
                     type="range"
-                    id="height-range"
-                    min="1"
-                    max="35"
-                    value="16"
+                    id="pixel-size-range"
+                    min="5"
+                    max="40"
+                    value="20"
                 >
-                <span id="height-value">16</span>
+
+                <span id="pixel-size-value">20px</span>
             </div>
 
-            <button id="submit-grid">Create Grid</button>
-            <input type="color" id="color-input" value="#000000">
-            <button id="erase-btn">Erase</button>
-            <button id="paint-btn">Paint</button>
-            <button id="clear-btn">Clear</button>
-            <button id="save-draft-btn">Save as Draft</button>
-            <button id="publish-btn">Publish</button>
+            <button
+                id="submit-grid"
+                class="create-grid-btn"
+            >
+                Create Grid
+            </button>
+
+        </section>
+
+
+        <!-- ================= TOOLS ================= -->
+
+        <section class="editor-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h3>
+                        Tools
+                    </h3>
+
+                    <span>
+                        Choose your brush
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="tool-bar">
+
+
+                <!-- COLOR -->
+
+                <div class="color-wrapper">
+
+                    <input
+                        type="color"
+                        id="color-input"
+                        value="#000000"
+                    >
+
+                </div>
+
+
+                <!-- PAINT -->
+
+                <button
+                    id="paint-btn"
+                    class="editControls selectedEditControl tool-btn"
+                >
+                    ✏️ Paint
+                </button>
+
+
+                <!-- ERASE -->
+
+                <button
+                    id="erase-btn"
+                    class="editControls tool-btn"
+                >
+                    🧹 Erase
+                </button>
+
+
+                <!-- CLEAR -->
+
+                <button
+                    id="clear-grid"
+                    class="tool-btn danger-light"
+                >
+                    🗑 Clear
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= PALETTE ================= -->
+
+        <section class="editor-section palette-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h3>
+                        Palette
+                    </h3>
+
+                    <span id="palette-status">
+                        Generate a palette for inspiration
+                    </span>
+
+                </div>
+
+
+                <button
+                    id="fetch-palette-btn"
+                    class="palette-btn"
+                >
+                    ↻ Random
+                </button>
+
+            </div>
+
+
+            <div
+                id="palette-container"
+                class="palette-container"
+            ></div>
+
+        </section>
+
+
+        <!-- ================= CANVAS ================= -->
+
+        <section class="canvas-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h3>
+                        Canvas
+                    </h3>
+
+                    <span>
+                        Click and drag to draw
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="container">
+
+                <!-- IMPORTANT:
+                     script.js expects this exact ID -->
+
+                <canvas id="pixel-canvas"></canvas>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= ACTIONS ================= -->
+
+        <div class="action-wrapper">
+
+
+            <!-- SAVE -->
+
+            <button
+                id="save-draft-btn"
+                class="btn-secondary"
+            >
+                Save Draft
+            </button>
+
+
+            <!-- PUBLISH -->
+
+            <button
+                id="post-art-btn"
+                class="btn-primary"
+            >
+                Publish
+            </button>
+
+
+            <!-- DOWNLOAD -->
+
+            <button
+                id="download-png-btn"
+                class="btn-secondary"
+            >
+                ↓ PNG
+            </button>
+
+
+            <!-- SHARE -->
+
+            <button
+                id="share-art-btn"
+                class="btn-share"
+            >
+                ↗ Share
+            </button>
 
         </div>
 
-        <div class="container">
-            <canvas id="pixel-canvas"></canvas>
-        </div>
 
     </main>
+
 
     <script src="js/script.js"></script>
 
 </body>
+
 </html>

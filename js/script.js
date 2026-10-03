@@ -1,52 +1,159 @@
-const currentUser = localStorage.getItem("logged_in_user");
+/* =====================================================
+   SESSION
+===================================================== */
+
+const currentUser =
+    localStorage.getItem("logged_in_user");
+
 
 if (!currentUser) {
+
     window.location.href = "login.html";
+
 }
 
-const container = document.querySelector(".container");
-const colorButton = document.getElementById("color-input");
-const gridButton = document.getElementById("submit-grid");
-const gridWidth = document.getElementById("width-range");
-const gridHeight = document.getElementById("height-range");
-const eraseBtn = document.getElementById("erase-btn");
-const paintBtn = document.getElementById("paint-btn");
-const widthValue = document.getElementById("width-value");
-const heightValue = document.getElementById("height-value");
-const clearBtn = document.getElementById("clear-btn");
-const titleInput = document.getElementById("artwork-title");
-const userDisplay = document.getElementById("user-display");
-const saveDraftBtn = document.getElementById("save-draft-btn");
-const publishBtn = document.getElementById("publish-btn");
 
-// Canvas setup
-const canvas = document.getElementById("pixel-canvas");
-const ctx = canvas.getContext("2d");
+/* =====================================================
+   UI ELEMENTS
+===================================================== */
+
+const container =
+    document.querySelector(".container");
+
+const canvas =
+    document.getElementById("pixel-canvas");
+
+const ctx =
+    canvas.getContext("2d");
 
 
-// Application state
-let artworkTitle = "";
+const colorButton =
+    document.getElementById("color-input");
+
+const gridButton =
+    document.getElementById("submit-grid");
+
+const clearGridButton =
+    document.getElementById("clear-grid");
+
+const gridWidth =
+    document.getElementById("width-range");
+
+const gridHeight =
+    document.getElementById("height-range");
+
+const widthValue =
+    document.getElementById("width-value");
+
+const heightValue =
+    document.getElementById("height-value");
+
+const eraseBtn =
+    document.getElementById("erase-btn");
+
+const paintBtn =
+    document.getElementById("paint-btn");
+
+const titleInput =
+    document.getElementById("artwork-title");
+
+const userDisplay =
+    document.getElementById("user-display");
+
+const saveDraftBtn =
+    document.getElementById("save-draft-btn");
+
+const postArtBtn =
+    document.getElementById("post-art-btn");
+
+const downloadBtn =
+    document.getElementById("download-png-btn");
+
+const shareBtn =
+    document.getElementById("share-art-btn");
+
+const fetchPaletteBtn =
+    document.getElementById("fetch-palette-btn");
+
+const paletteContainer =
+    document.getElementById("palette-container");
+
+const paletteStatus =
+    document.getElementById("palette-status");
+
+const logoutBtn =
+    document.getElementById("logout-btn");
+
+const pixelSizeRange =
+    document.getElementById("pixel-size-range");
+
+const pixelSizeValue =
+    document.getElementById("pixel-size-value");
+
+/* =====================================================
+   APPLICATION STATE
+===================================================== */
+
 let rows = 16;
+
 let cols = 16;
+
 let draw = false;
+
 let erase = false;
+
 let currentDraftId = null;
 
-const CELL_SIZE = 20;
+let CELL_SIZE = 20;
 
+const LABEL_SIZE = 30;
 
-// Store pixel colors
 let matrix = [];
 
 
-// Create the pixel grid
+/* =====================================================
+   USER DISPLAY
+===================================================== */
+
+if (userDisplay && currentUser) {
+
+    userDisplay.innerText =
+        `Welcome, ${currentUser}`;
+
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+logoutBtn.addEventListener("click", () => {
+
+    localStorage.removeItem(
+        "logged_in_user"
+    );
+
+    window.location.href =
+        "login.html";
+
+});
+
+
+/* =====================================================
+   CREATE GRID
+===================================================== */
+
 function createGrid(r, c, savedGrid = null) {
 
     rows = parseInt(r);
     cols = parseInt(c);
 
-    canvas.width = cols * CELL_SIZE;
-    canvas.height = rows * CELL_SIZE;
+    canvas.width =
+        cols * CELL_SIZE + LABEL_SIZE;
+
+    canvas.height =
+        rows * CELL_SIZE + LABEL_SIZE;
+
 
     if (
         savedGrid &&
@@ -68,7 +175,10 @@ function createGrid(r, c, savedGrid = null) {
 }
 
 
-// Render canvas
+/* =====================================================
+   RENDER CANVAS
+===================================================== */
+
 function renderCanvas() {
 
     ctx.clearRect(
@@ -78,16 +188,102 @@ function renderCanvas() {
         canvas.height
     );
 
+
+    /*
+        White canvas background
+    */
+
+    ctx.fillStyle = "#ffffff";
+
+    ctx.fillRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    /*
+        Text settings
+    */
+
+    ctx.fillStyle = "#000";
+
+    ctx.font = "bold 11px monospace";
+
+    ctx.textAlign = "center";
+
+    ctx.textBaseline = "middle";
+
+
+    /*
+        Draw column numbers
+    */
+
+    for (let j = 0; j < cols; j++) {
+
+        const x =
+            LABEL_SIZE +
+            j * CELL_SIZE +
+            CELL_SIZE / 2;
+
+        const y =
+            LABEL_SIZE / 2;
+
+        ctx.fillText(
+            j + 1,
+            x,
+            y
+        );
+    }
+
+
+    /*
+        Draw row numbers
+    */
+
+    for (let i = 0; i < rows; i++) {
+
+        const x =
+            LABEL_SIZE / 2;
+
+        const y =
+            LABEL_SIZE +
+            i * CELL_SIZE +
+            CELL_SIZE / 2;
+
+        ctx.fillText(
+            i + 1,
+            x,
+            y
+        );
+    }
+
+
+    /*
+        Draw pixels + grid
+    */
+
     for (let i = 0; i < rows; i++) {
 
         for (let j = 0; j < cols; j++) {
 
-            const x = j * CELL_SIZE;
-            const y = i * CELL_SIZE;
+            const x =
+                LABEL_SIZE +
+                j * CELL_SIZE;
 
-            const color = matrix[i][j];
+            const y =
+                LABEL_SIZE +
+                i * CELL_SIZE;
 
-            // Draw pixel
+            const color =
+                matrix[i][j];
+
+
+            /*
+                Draw colored pixel
+            */
+
             if (color !== "transparent") {
 
                 ctx.fillStyle = color;
@@ -100,8 +296,13 @@ function renderCanvas() {
                 );
             }
 
-            // Draw grid
+
+            /*
+                Draw grid
+            */
+
             ctx.strokeStyle = "#ddd";
+
             ctx.lineWidth = 1;
 
             ctx.strokeRect(
@@ -112,19 +313,80 @@ function renderCanvas() {
             );
         }
     }
+
+
+    /*
+        Draw border around actual pixel grid
+    */
+
+    ctx.strokeStyle = "#000";
+
+    ctx.lineWidth = 2;
+
+    ctx.strokeRect(
+        LABEL_SIZE,
+        LABEL_SIZE,
+        cols * CELL_SIZE,
+        rows * CELL_SIZE
+    );
 }
 
+/* =====================================================
+   COORDINATES
+===================================================== */
 
-// Convert mouse position into grid coordinates
 function getCellFromCoordinates(e) {
 
-    const rect = canvas.getBoundingClientRect();
+    const rect =
+        canvas.getBoundingClientRect();
 
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
 
-    const col = Math.floor(x / CELL_SIZE);
-    const row = Math.floor(y / CELL_SIZE);
+    /*
+        Convert mouse position from
+        displayed canvas size to
+        actual canvas coordinates.
+    */
+
+    const scaleX =
+        canvas.width / rect.width;
+
+    const scaleY =
+        canvas.height / rect.height;
+
+
+    const x =
+        (e.clientX - rect.left) * scaleX;
+
+    const y =
+        (e.clientY - rect.top) * scaleY;
+
+
+    /*
+        Ignore the row/column label area
+    */
+
+    if (
+        x < LABEL_SIZE ||
+        y < LABEL_SIZE
+    ) {
+
+        return {
+            row: -1,
+            col: -1
+        };
+    }
+
+
+    const col =
+        Math.floor(
+            (x - LABEL_SIZE) / CELL_SIZE
+        );
+
+    const row =
+        Math.floor(
+            (y - LABEL_SIZE) / CELL_SIZE
+        );
+
 
     return {
         row,
@@ -133,11 +395,143 @@ function getCellFromCoordinates(e) {
 }
 
 
-// Paint a pixel
+/* =====================================================
+   PAINT CELL
+===================================================== */
+
 function paintCell(e) {
 
-    const { row, col } =
+    const {
+        row,
+        col
+    } =
         getCellFromCoordinates(e);
+
+
+    if (
+        row < 0 ||
+        row >= rows ||
+        col < 0 ||
+        col >= cols
+    ) {
+
+        return;
+
+    }
+
+
+    const targetColor =
+        erase
+            ? "transparent"
+            : colorButton.value;
+
+
+    matrix[row][col] =
+        targetColor;
+
+
+    renderCanvas();
+
+}
+
+
+/* =====================================================
+   MOUSE DRAWING
+===================================================== */
+
+canvas.addEventListener(
+    "mousedown",
+    (e) => {
+
+        draw = true;
+
+        paintCell(e);
+
+    }
+);
+
+
+canvas.addEventListener(
+    "mousemove",
+    (e) => {
+
+        if (!draw) {
+
+            return;
+
+        }
+
+        paintCell(e);
+
+    }
+);
+
+
+window.addEventListener(
+    "mouseup",
+    () => {
+
+        draw = false;
+
+    }
+);
+
+
+/* =====================================================
+   TOUCH DRAWING
+===================================================== */
+
+function getCellFromTouch(e) {
+
+    const rect =
+        canvas.getBoundingClientRect();
+
+    const touch =
+        e.touches[0];
+
+
+    const x =
+        touch.clientX -
+        rect.left;
+
+    const y =
+        touch.clientY -
+        rect.top;
+
+
+    return {
+
+        row: Math.floor(
+            y / CELL_SIZE
+        ),
+
+        col: Math.floor(
+            x / CELL_SIZE
+        )
+
+    };
+
+}
+
+
+function handleTouchPaint(e) {
+
+    if (!draw) {
+
+        return;
+
+    }
+
+
+    e.preventDefault();
+
+
+    const {
+        row,
+        col
+    } =
+        getCellFromTouch(e);
+
 
     if (
         row >= 0 &&
@@ -151,278 +545,972 @@ function paintCell(e) {
                 ? "transparent"
                 : colorButton.value;
 
-        matrix[row][col] = targetColor;
+
+        matrix[row][col] =
+            targetColor;
+
 
         renderCanvas();
+
     }
+
 }
 
 
-// Mouse painting
-canvas.addEventListener("mousedown", (e) => {
+canvas.addEventListener(
+    "touchstart",
+    (e) => {
 
-    draw = true;
+        draw = true;
 
-    paintCell(e);
+        handleTouchPaint(e);
 
-});
-
-
-canvas.addEventListener("mousemove", (e) => {
-
-    if (!draw) return;
-
-    paintCell(e);
-
-});
+    },
+    {
+        passive: false
+    }
+);
 
 
-window.addEventListener("mouseup", () => {
-
-    draw = false;
-
-});
-
-
-// Create grid
-gridButton.addEventListener("click", () => {
-
-    createGrid(
-        gridHeight.value,
-        gridWidth.value
-    );
-
-    console.log("Artwork:", artworkTitle);
-
-});
+canvas.addEventListener(
+    "touchmove",
+    handleTouchPaint,
+    {
+        passive: false
+    }
+);
 
 
-// Width display
-gridWidth.addEventListener("input", () => {
+window.addEventListener(
+    "touchend",
+    () => {
 
-    widthValue.innerText =
-        gridWidth.value < 10
-            ? `0${gridWidth.value}`
-            : gridWidth.value;
+        draw = false;
 
-});
-
-
-// Height display
-gridHeight.addEventListener("input", () => {
-
-    heightValue.innerText =
-        gridHeight.value < 10
-            ? `0${gridHeight.value}`
-            : gridHeight.value;
-
-});
+    }
+);
 
 
-// Erase mode
-eraseBtn.addEventListener("click", () => {
+/* =====================================================
+   CREATE GRID BUTTON
+===================================================== */
 
-    erase = true;
+gridButton.addEventListener(
+    "click",
+    () => {
 
-    eraseBtn.classList.add("selected");
-    paintBtn.classList.remove("selected");
+        createGrid(
+            gridHeight.value,
+            gridWidth.value
+        );
 
-});
-
-
-// Paint mode
-paintBtn.addEventListener("click", () => {
-
-    erase = false;
-
-    paintBtn.classList.add("selected");
-    eraseBtn.classList.remove("selected");
-
-});
+    }
+);
 
 
-// Clear grid
-clearBtn.addEventListener("click", () => {
+/* =====================================================
+   CLEAR GRID
+===================================================== */
 
-    matrix = Array.from(
-        { length: rows },
-        () => Array(cols).fill("transparent")
-    );
+clearGridButton.addEventListener(
+    "click",
+    () => {
+
+        matrix = Array.from(
+            { length: rows },
+            () =>
+                Array(cols).fill(
+                    "transparent"
+                )
+        );
+
+        renderCanvas();
+
+    }
+);
+
+
+/* =====================================================
+   PAINT / ERASE
+===================================================== */
+
+paintBtn.addEventListener(
+    "click",
+    () => {
+
+        erase = false;
+
+        paintBtn.classList.add(
+            "selectedEditControl"
+        );
+
+        eraseBtn.classList.remove(
+            "selectedEditControl"
+        );
+
+    }
+);
+
+
+eraseBtn.addEventListener(
+    "click",
+    () => {
+
+        erase = true;
+
+        eraseBtn.classList.add(
+            "selectedEditControl"
+        );
+
+        paintBtn.classList.remove(
+            "selectedEditControl"
+        );
+
+    }
+);
+
+
+/* =====================================================
+   SLIDERS
+===================================================== */
+
+gridWidth.addEventListener(
+    "input",
+    () => {
+
+        widthValue.innerText =
+            gridWidth.value;
+
+    }
+);
+
+
+gridHeight.addEventListener(
+    "input",
+    () => {
+
+        heightValue.innerText =
+            gridHeight.value;
+
+    }
+);
+
+pixelSizeRange.addEventListener("input", () => {
+
+    CELL_SIZE =
+        parseInt(pixelSizeRange.value);
+
+    pixelSizeValue.innerText =
+        `${CELL_SIZE}px`;
+
+    /*
+        Re-render only.
+
+        Matrix stays exactly the same.
+        So artwork is NOT destroyed.
+    */
+
+    canvas.width =
+        cols * CELL_SIZE + LABEL_SIZE;
+
+    canvas.height =
+        rows * CELL_SIZE + LABEL_SIZE;
 
     renderCanvas();
-
 });
 
 
-// Artwork title
-titleInput.addEventListener("input", () => {
+/* =====================================================
+   TITLE
+===================================================== */
 
-    if (titleInput.value.length > 50) {
+titleInput.addEventListener(
+    "input",
+    () => {
 
-        titleInput.value =
-            titleInput.value.substring(0, 50);
+        if (
+            titleInput.value.length > 50
+        ) {
+
+            titleInput.value =
+                titleInput.value.substring(
+                    0,
+                    50
+                );
+
+        }
+
     }
-
-    artworkTitle =
-        titleInput.value.trim();
-
-});
+);
 
 
-// Display logged-in user
-if (currentUser) {
+/* =====================================================
+   GET MATRIX
+===================================================== */
 
-    userDisplay.innerText =
-        `Welcome, ${currentUser}`;
+function getGridMatrix() {
+
+    return matrix;
 
 }
 
 
-// Save draft
-saveDraftBtn.addEventListener("click", () => {
+/* =====================================================
+   SAVE DRAFT
+===================================================== */
 
-    const title =
-        titleInput.value.trim() || "Untitled Draft";
+saveDraftBtn.addEventListener(
+    "click",
+    () => {
 
-    let drafts =
-        JSON.parse(
-            localStorage.getItem("pixel_drafts")
-        ) || [];
+        const title =
+            titleInput.value.trim() ||
+            "Untitled Draft";
 
 
-    // Update existing draft
-    if (currentDraftId) {
+        let drafts =
+            JSON.parse(
+                localStorage.getItem(
+                    "pixel_drafts"
+                )
+            ) || [];
 
-        const draftIndex =
-            drafts.findIndex(
-                draft =>
-                    draft.id === currentDraftId &&
-                    draft.owner === currentUser
+
+        const draftData = {
+
+            id:
+                currentDraftId ||
+                Date.now().toString(),
+
+            owner:
+                currentUser,
+
+            title:
+                title,
+
+            rows:
+                rows,
+
+            cols:
+                cols,
+
+            pixelSize: CELL_SIZE,
+
+            matrix:
+                getGridMatrix()
+
+        };
+
+
+        if (currentDraftId) {
+
+            drafts =
+                drafts.map(
+                    draft =>
+                        draft.id ===
+                        currentDraftId
+                            ? draftData
+                            : draft
+                );
+
+        } else {
+
+            drafts.push(
+                draftData
             );
 
+        }
 
-        if (draftIndex !== -1) {
 
-            drafts[draftIndex].title = title;
-            drafts[draftIndex].rows = rows;
-            drafts[draftIndex].cols = cols;
-            drafts[draftIndex].matrix = matrix;
+        localStorage.setItem(
+            "pixel_drafts",
+            JSON.stringify(drafts)
+        );
+
+
+        currentDraftId =
+            draftData.id;
+
+
+        alert(
+            "Draft saved!"
+        );
+
+    }
+);
+
+
+/* =====================================================
+   PUBLISH
+===================================================== */
+
+postArtBtn.addEventListener(
+    "click",
+    () => {
+
+        const title =
+            titleInput.value.trim() ||
+            "Untitled Post";
+
+
+        let posts =
+            JSON.parse(
+                localStorage.getItem(
+                    "pixel_posts"
+                )
+            ) || [];
+
+
+        const postData = {
+
+            id:
+                Date.now().toString(),
+
+            creator:
+                currentUser,
+
+            title:
+                title,
+
+            rows:
+                rows,
+
+            cols:
+                cols,
+
+            matrix:
+                getGridMatrix()
+
+        };
+
+
+        posts.push(
+            postData
+        );
+
+
+        localStorage.setItem(
+            "pixel_posts",
+            JSON.stringify(posts)
+        );
+
+
+        /* Remove corresponding draft */
+
+        if (currentDraftId) {
+
+            let drafts =
+                JSON.parse(
+                    localStorage.getItem(
+                        "pixel_drafts"
+                    )
+                ) || [];
+
+
+            drafts =
+                drafts.filter(
+                    draft =>
+                        draft.id !==
+                        currentDraftId
+                );
+
 
             localStorage.setItem(
                 "pixel_drafts",
                 JSON.stringify(drafts)
             );
 
-            alert("Draft updated!");
-
-            return;
         }
+
+
+        window.location.href =
+            "feed.html";
+
     }
+);
 
 
-    // Create new draft
-    const draftData = {
+/* =====================================================
+   DOWNLOAD PNG
+   Canvas API + Blob API
+===================================================== */
 
-        id: Date.now().toString(),
+downloadBtn.addEventListener(
+    "click",
+    () => {
 
-        owner: currentUser,
-
-        title: title,
-
-        rows: rows,
-
-        cols: cols,
-
-        matrix: matrix
-    };
+        const title =
+            titleInput.value.trim() ||
+            "pixel-artwork";
 
 
-    drafts.push(draftData);
+        const EXPORT_CELL_SIZE =
+            32;
 
-    localStorage.setItem(
-        "pixel_drafts",
-        JSON.stringify(drafts)
+
+        const exportCanvas =
+            document.createElement(
+                "canvas"
+            );
+
+
+        const exportCtx =
+            exportCanvas.getContext(
+                "2d"
+            );
+
+
+        exportCanvas.width =
+            cols *
+            EXPORT_CELL_SIZE;
+
+
+        exportCanvas.height =
+            rows *
+            EXPORT_CELL_SIZE;
+
+
+        for (
+            let i = 0;
+            i < rows;
+            i++
+        ) {
+
+            for (
+                let j = 0;
+                j < cols;
+                j++
+            ) {
+
+                const color =
+                    matrix[i][j];
+
+
+                if (
+                    color &&
+                    color !== "transparent"
+                ) {
+
+                    exportCtx.fillStyle =
+                        color;
+
+
+                    exportCtx.fillRect(
+                        j *
+                            EXPORT_CELL_SIZE,
+
+                        i *
+                            EXPORT_CELL_SIZE,
+
+                        EXPORT_CELL_SIZE,
+
+                        EXPORT_CELL_SIZE
+                    );
+
+                }
+
+            }
+
+        }
+
+
+        exportCanvas.toBlob(
+            (blob) => {
+
+                if (!blob) {
+
+                    alert(
+                        "Error generating image file."
+                    );
+
+                    return;
+
+                }
+
+
+                const blobUrl =
+                    URL.createObjectURL(
+                        blob
+                    );
+
+
+                const downloadLink =
+                    document.createElement(
+                        "a"
+                    );
+
+
+                downloadLink.href =
+                    blobUrl;
+
+
+                downloadLink.download =
+                    `${title
+                        .toLowerCase()
+                        .replace(
+                            /\s+/g,
+                            "_"
+                        )}.png`;
+
+
+                document.body.appendChild(
+                    downloadLink
+                );
+
+
+                downloadLink.click();
+
+
+                document.body.removeChild(
+                    downloadLink
+                );
+
+
+                URL.revokeObjectURL(
+                    blobUrl
+                );
+
+            },
+            "image/png"
+        );
+
+    }
+);
+
+
+/* =====================================================
+   RANDOM PALETTE
+   Fetch API
+===================================================== */
+
+function rgbToHex(
+    r,
+    g,
+    b
+) {
+
+    return (
+        "#" +
+        [r, g, b]
+            .map(
+                value => {
+
+                    const hex =
+                        value.toString(
+                            16
+                        );
+
+                    return hex.length === 1
+                        ? "0" + hex
+                        : hex;
+
+                }
+            )
+            .join("")
     );
 
-    currentDraftId =
-        draftData.id;
+}
 
-    alert("Draft saved!");
 
-});
-// Load initial grid or saved draft
-window.addEventListener("load", () => {
+async function fetchRandomPalette() {
 
-    const urlParams =
+    paletteStatus.innerText =
+        "Fetching...";
+
+
+    fetchPaletteBtn.disabled =
+        true;
+
+
+    try {
+
+        const response =
+            await fetch(
+                "http://colormind.io/api/",
+                {
+                    method: "POST",
+
+                    body: JSON.stringify({
+                        model: "default"
+                    })
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                `HTTP Error! Status: ${response.status}`
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        const rgbColors =
+            data.result;
+
+
+        paletteContainer.innerHTML =
+            "";
+
+
+        rgbColors.forEach(
+            rgb => {
+
+                const hexColor =
+                    rgbToHex(
+                        rgb[0],
+                        rgb[1],
+                        rgb[2]
+                    );
+
+
+                const swatch =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                swatch.style.backgroundColor =
+                    hexColor;
+
+
+                swatch.title =
+                    `Select ${hexColor}`;
+
+
+                swatch.addEventListener(
+                    "click",
+                    () => {
+
+                        colorButton.value =
+                            hexColor;
+
+
+                        erase = false;
+
+
+                        eraseBtn.classList.remove(
+                            "selectedEditControl"
+                        );
+
+
+                        paintBtn.classList.add(
+                            "selectedEditControl"
+                        );
+
+                    }
+                );
+
+
+                paletteContainer.appendChild(
+                    swatch
+                );
+
+            }
+        );
+
+
+        paletteStatus.innerText =
+            "Palette loaded!";
+
+    } catch (error) {
+
+        console.error(
+            "Fetch API Error:",
+            error
+        );
+
+
+        paletteStatus.innerText =
+            "Failed to load palette.";
+
+    } finally {
+
+        fetchPaletteBtn.disabled =
+            false;
+
+    }
+
+}
+
+
+fetchPaletteBtn.addEventListener(
+    "click",
+    fetchRandomPalette
+);
+
+
+/* =====================================================
+   WEB SHARE API
+===================================================== */
+
+shareBtn.addEventListener(
+    "click",
+    () => {
+
+        if (!navigator.share) {
+
+            alert(
+                "Web Share API is not supported on this browser/device."
+            );
+
+            return;
+
+        }
+
+
+        const title =
+            titleInput.value.trim() ||
+            "My Pixel Art";
+
+
+        const EXPORT_CELL_SIZE =
+            32;
+
+
+        const exportCanvas =
+            document.createElement(
+                "canvas"
+            );
+
+
+        const exportCtx =
+            exportCanvas.getContext(
+                "2d"
+            );
+
+
+        exportCanvas.width =
+            cols *
+            EXPORT_CELL_SIZE;
+
+
+        exportCanvas.height =
+            rows *
+            EXPORT_CELL_SIZE;
+
+
+        for (
+            let i = 0;
+            i < rows;
+            i++
+        ) {
+
+            for (
+                let j = 0;
+                j < cols;
+                j++
+            ) {
+
+                const color =
+                    matrix[i][j];
+
+
+                if (
+                    color &&
+                    color !== "transparent"
+                ) {
+
+                    exportCtx.fillStyle =
+                        color;
+
+
+                    exportCtx.fillRect(
+                        j *
+                            EXPORT_CELL_SIZE,
+
+                        i *
+                            EXPORT_CELL_SIZE,
+
+                        EXPORT_CELL_SIZE,
+
+                        EXPORT_CELL_SIZE
+                    );
+
+                }
+
+            }
+
+        }
+
+
+        exportCanvas.toBlob(
+            async (blob) => {
+
+                if (!blob) {
+
+                    alert(
+                        "Failed to process image for sharing."
+                    );
+
+                    return;
+
+                }
+
+
+                const fileName =
+                    `${title
+                        .toLowerCase()
+                        .replace(
+                            /\s+/g,
+                            "_"
+                        )}.png`;
+
+
+                const file =
+                    new File(
+                        [blob],
+                        fileName,
+                        {
+                            type:
+                                "image/png"
+                        }
+                    );
+
+
+                try {
+
+                    if (
+                        navigator.canShare &&
+                        navigator.canShare({
+                            files: [file]
+                        })
+                    ) {
+
+                        await navigator.share({
+
+                            title:
+                                title,
+
+                            text:
+                                `Check out my pixel art creation: "${title}"!`,
+
+                            files:
+                                [file]
+
+                        });
+
+                    } else {
+
+                        await navigator.share({
+
+                            title:
+                                title,
+
+                            text:
+                                `Check out my pixel art creation: "${title}"!`
+
+                        });
+
+                    }
+
+                } catch (error) {
+
+                    if (
+                        error.name !==
+                        "AbortError"
+                    ) {
+
+                        console.error(
+                            "Share failed:",
+                            error
+                        );
+
+                    }
+
+                }
+
+            },
+            "image/png"
+        );
+
+    }
+);
+
+
+/* =====================================================
+   LOAD DRAFT
+===================================================== */
+
+function loadDraftFromURL() {
+
+    const params =
         new URLSearchParams(
             window.location.search
         );
 
+
     const draftId =
-        urlParams.get("draftId");
+        params.get("draftId");
 
 
-    // No draft selected
     if (!draftId) {
 
-        createGrid(16, 16);
+        return false;
 
-        return;
     }
 
 
-    // Get saved drafts
     const drafts =
         JSON.parse(
-            localStorage.getItem("pixel_drafts")
+            localStorage.getItem(
+                "pixel_drafts"
+            )
         ) || [];
 
 
-    // Find current user's draft
     const draft =
         drafts.find(
-            d =>
-                d.id === draftId &&
-                d.owner === currentUser
+            item =>
+                item.id === draftId &&
+                item.owner === currentUser
         );
 
 
-    // Draft not found
     if (!draft) {
 
-        createGrid(16, 16);
+        return false;
 
-        return;
     }
 
 
-    // Restore draft
     currentDraftId =
         draft.id;
 
-    titleInput.value =
-        draft.title;
 
-    artworkTitle =
+    titleInput.value =
         draft.title;
 
 
     gridWidth.value =
         draft.cols;
 
+
     gridHeight.value =
         draft.rows;
 
 
     widthValue.innerText =
-        draft.cols < 10
-            ? `0${draft.cols}`
-            : draft.cols;
+        draft.cols;
+
 
     heightValue.innerText =
-        draft.rows < 10
-            ? `0${draft.rows}`
-            : draft.rows;
+        draft.rows;
+
+
+    CELL_SIZE =
+    draft.pixelSize || 20;
+
+    pixelSizeRange.value =
+        CELL_SIZE;
+
+    pixelSizeValue.innerText =
+        `${CELL_SIZE}px`;
 
 
     createGrid(
@@ -431,71 +1519,53 @@ window.addEventListener("load", () => {
         draft.matrix
     );
 
-});
 
-publishBtn.addEventListener("click", () => {
+    return true;
 
-    const title =
-        titleInput.value.trim() || "Untitled Artwork";
+}
 
 
-    let artworks =
-        JSON.parse(
-            localStorage.getItem("pixel_artworks")
-        ) || [];
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+window.addEventListener(
+    "load",
+    () => {
+
+        if (
+            !loadDraftFromURL()
+        ) {
+
+            gridWidth.value =
+                16;
+
+            gridHeight.value =
+                16;
+
+            widthValue.innerText =
+                "16";
+
+            heightValue.innerText =
+                "16";
 
 
-    const artwork = {
+            pixelSizeRange.value = CELL_SIZE;
 
-        id:
-            Date.now().toString(),
+            pixelSizeValue.innerText =
+                `${CELL_SIZE}px`;
+            
+            createGrid(
+                16,
+                16
+            );
 
-        owner:
-            currentUser,
-
-        title:
-            title,
-
-        rows:
-            rows,
-
-        cols:
-            cols,
-
-        matrix:
-            matrix.map(row => [...row]),
-
-        likes:
-            [],
-
-        comments:
-            [],
-
-        publishedAt:
-            new Date().toISOString()
-
-    };
+        }
 
 
-    artworks.push(
-        artwork
-    );
+        paintBtn.classList.add(
+            "selectedEditControl"
+        );
 
-
-    localStorage.setItem(
-        "pixel_artworks",
-        JSON.stringify(
-            artworks
-        )
-    );
-
-
-    alert("Artwork published!");
-
-
-    window.location.href =
-        `artwork.html?id=${artwork.id}`;
-
-});
-
-paintBtn.classList.add("selected");
+    }
+);

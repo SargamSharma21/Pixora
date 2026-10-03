@@ -1,3 +1,7 @@
+/* =====================================================
+   RESET
+===================================================== */
+
 * {
     margin: 0;
     padding: 0;
@@ -6,136 +10,339 @@
 }
 
 body {
-    background-color: #f4c531;
+    background: #f4c531;
+    color: #000;
+    min-height: 100vh;
 }
 
+
+/* =====================================================
+   NAVBAR
+===================================================== */
+
 nav {
-    background: #ffffff;
-    padding: 15px 30px;
+    height: 72px;
+
+    background: #fff;
+
+    padding: 0 32px;
 
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
 
     border-bottom: 4px solid #000;
 }
 
 nav h1 {
-    font-size: 22px;
+    font-size: 21px;
+    font-weight: 800;
+    letter-spacing: -1px;
 }
 
 nav ul {
     display: flex;
-    list-style: none;
-    gap: 20px;
     align-items: center;
+    gap: 22px;
+
+    list-style: none;
 }
 
 nav a {
-    text-decoration: none;
     color: #000;
-    font-weight: bold;
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: 700;
 }
 
 nav a:hover {
     border-bottom: 3px solid #f4c531;
+    padding-bottom: 3px;
 }
 
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+#logout-btn {
+    background: #f4c531;
+
+    border: 2px solid #000;
+    border-radius: 5px;
+
+    padding: 8px 14px;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.12s ease;
+}
+
+#logout-btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 3px 3px 0 #000;
+}
+
+
+/* =====================================================
+   MAIN EDITOR CARD
+===================================================== */
+
 .wrapper {
-    background-color: #ffffff;
+    width: min(1100px, calc(100% - 48px));
 
-    width: 80%;
-    max-width: 1000px;
+    margin: 38px auto 50px;
 
-    margin: 30px auto;
-    padding: 30px 20px;
+    padding: 34px 38px 38px;
+
+    background: #fff;
 
     border: 4px solid #000;
     border-radius: 8px;
 
-    box-shadow: 8px 8px 0 #000;
+    box-shadow: 9px 9px 0 #000;
+}
+
+
+/* =====================================================
+   EDITOR HEADER
+===================================================== */
+
+.editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    margin-bottom: 28px;
+}
+
+.editor-header h2 {
+    font-size: 27px;
+    line-height: 1.15;
+
+    letter-spacing: -1.5px;
+}
+
+.eyebrow {
+    margin-bottom: 6px;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    letter-spacing: 1px;
+}
+
+#user-display {
+    padding: 8px 11px;
+
+    background: #f4c531;
+
+    border: 2px solid #000;
+    border-radius: 4px;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   ARTWORK TITLE
+===================================================== */
+
+.title-meta {
+    margin-bottom: 30px;
+}
+
+.title-meta label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 13px;
+    font-weight: 700;
 }
 
 .title-meta input {
     width: 100%;
 
-    padding: 10px;
-    margin-bottom: 20px;
+    height: 44px;
+
+    padding: 0 13px;
+
+    background: #fff;
 
     border: 2px solid #000;
     border-radius: 5px;
 
-    font-weight: bold;
+    outline: none;
+
+    font-size: 13px;
+    font-weight: 600;
 }
 
-.options {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-
-    margin-bottom: 20px;
+.title-meta input:focus {
+    box-shadow: 4px 4px 0 #f4c531;
 }
 
-.slider {
+
+/* =====================================================
+   COMMON SECTION
+===================================================== */
+
+.editor-section,
+.palette-section,
+.canvas-section {
+    padding-top: 24px;
+    margin-top: 24px;
+
+    border-top: 2px solid #e5e5e5;
+}
+
+.section-heading {
     display: flex;
     align-items: center;
-    gap: 15px;
+    justify-content: space-between;
+
+    margin-bottom: 16px;
 }
 
-.slider label {
-    min-width: 110px;
-    font-weight: bold;
+.section-heading h3 {
+    font-size: 15px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
 }
 
-.slider input {
-    flex: 1;
+.section-heading span {
+    color: #666;
+
+    font-size: 11px;
 }
 
-button {
-    background-color: #f4c531;
+
+/* =====================================================
+   GRID SETTINGS
+===================================================== */
+
+.grid-settings {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 35px;
+
+    margin-bottom: 18px;
+}
+
+.slider-control {
+    display: grid;
+
+    grid-template-columns: 55px 1fr 32px;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+.slider-control label {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.slider-control input[type="range"] {
+    width: 100%;
+
+    accent-color: #000;
+
+    cursor: pointer;
+}
+
+.slider-control span {
+    padding: 4px 5px;
+
+    background: #f4c531;
 
     border: 2px solid #000;
-    border-radius: 5px;
+    border-radius: 3px;
 
-    padding: 8px 12px;
+    text-align: center;
 
-    font-weight: bold;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   BUTTON BASE
+===================================================== */
+
+button {
+    font-family: inherit;
+
     cursor: pointer;
+
+    transition:
+        transform 0.12s ease,
+        box-shadow 0.12s ease,
+        background 0.12s ease;
 }
 
 button:hover {
-    transform: translate(-1px, -1px);
+    transform: translate(-2px, -2px);
+
     box-shadow: 3px 3px 0 #000;
 }
 
-.container {
-    min-height: 300px;
+button:active {
+    transform: translate(0, 0);
 
+    box-shadow: none;
+}
+
+
+/* =====================================================
+   CREATE GRID
+===================================================== */
+
+#create-grid,
+#submit-grid {
+    background: #f4c531;
+
+    border: 2px solid #000;
+    border-radius: 5px;
+
+    padding: 9px 15px;
+
+    font-size: 12px;
+    font-weight: 800;
+}
+
+
+/* =====================================================
+   TOOLS
+===================================================== */
+
+.tool-bar {
     display: flex;
-    justify-content: center;
+
     align-items: center;
 
-    overflow: auto;
-
-    margin-top: 15px;
-    padding: 20px;
-
-    border: 2px dashed #000;
+    gap: 9px;
 }
 
-.container canvas {
-    display: block;
-    max-width: 100%;
-    height: auto;
+#color-input {
+    width: 42px;
+    height: 38px;
 
-    image-rendering: pixelated;
-}
+    padding: 2px;
 
-input[type="color"] {
-    width: 60px;
-    height: 40px;
-
-    padding: 0;
+    background: #fff;
 
     border: 2px solid #000;
     border-radius: 5px;
@@ -143,33 +350,391 @@ input[type="color"] {
     cursor: pointer;
 }
 
-#erase-btn,
-#paint-btn {
-    background-color: white;
+#color-input::-webkit-color-swatch-wrapper {
+    padding: 0;
 }
 
-#erase-btn:hover,
-#paint-btn:hover {
-    background-color: #f4c531;
+#color-input::-webkit-color-swatch {
+    border: 0;
+    border-radius: 2px;
 }
 
-.selected {
-    box-shadow: 3px 3px 0 #000;
-    background-color: #f4c531;
+#color-input::-moz-color-swatch {
+    border: 0;
+    border-radius: 2px;
 }
 
-#clear-btn {
-    background-color: white;
-}
 
-#clear-btn:hover {
-    background-color: #f4c531;
-}
+/* =====================================================
+   PAINT / ERASE / CLEAR
+===================================================== */
 
-#user-display {
-    font-weight: bold;
-    background-color: #f4c531;
-    padding: 6px 10px;
+.editControls {
+    min-height: 38px;
+
+    padding: 8px 14px;
+
+    background: #fff;
+
     border: 2px solid #000;
+    border-radius: 5px;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.editControls:hover {
+    background: #f4c531;
+}
+
+.selectedEditControl {
+    background: #f4c531;
+
+    border: 2px solid #000;
+
+    box-shadow: 3px 3px 0 #000;
+}
+
+
+/* =====================================================
+   PALETTE
+===================================================== */
+
+.palette-section {
+    position: relative;
+}
+
+.palette-header {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 14px;
+}
+
+.palette-header h3 {
+    margin: 0;
+}
+
+.palette-header p {
+    margin-top: 5px;
+
+    color: #666;
+
+    font-size: 11px;
+}
+
+#random-palette,
+#random-palette-btn {
+    padding: 8px 12px;
+
+    background: #f4c531;
+
+    border: 2px solid #000;
+    border-radius: 5px;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+
+/* palette container */
+
+.palette-container {
+    min-height: 68px;
+
+    padding: 12px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    background: #fafafa;
+
+    border: 2px solid #000;
+    border-radius: 5px;
+
+    overflow-x: auto;
+}
+
+
+/*
+   Dynamic palette swatches.
+
+   These rules work whether your JS creates
+   buttons or div/span swatches.
+*/
+
+.palette-container button {
+    width: 42px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    padding: 0;
+
+    border: 3px solid #000;
     border-radius: 4px;
+
+    box-shadow: none;
+}
+
+.palette-container button:hover {
+    transform: translateY(-3px);
+
+    box-shadow: 3px 3px 0 #000;
+}
+
+
+/* =====================================================
+   CANVAS SECTION
+===================================================== */
+
+.canvas-section {
+    margin-top: 28px;
+
+    padding-top: 26px;
+}
+
+.canvas-header {
+    display: flex;
+
+    align-items: flex-end;
+    justify-content: space-between;
+
+    margin-bottom: 14px;
+}
+
+.canvas-header h3 {
+    margin: 0;
+}
+
+.canvas-header p {
+    color: #666;
+
+    font-size: 11px;
+}
+
+
+/* =====================================================
+   CANVAS CONTAINER
+===================================================== */
+
+.container {
+    width: 100%;
+
+    min-height: 430px;
+
+    padding: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: auto;
+
+    background: #fff;
+
+    border: 2px dashed #000;
+
+    border-radius: 4px;
+}
+
+
+/*
+   IMPORTANT:
+   No CSS background grid.
+   The Canvas API itself draws the grid.
+*/
+
+.container canvas {
+    display: block;
+
+    max-width: 100%;
+    height: auto;
+
+    background: #fff;
+
+    border: 3px solid #000;
+
+    box-shadow: 6px 6px 0 #000;
+
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    cursor: crosshair;
+
+    touch-action: none;
+}
+
+
+/* =====================================================
+   ACTIONS
+===================================================== */
+
+.action-wrapper {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: 22px;
+}
+
+.action-wrapper button {
+    min-height: 39px;
+
+    padding: 8px 15px;
+
+    border: 2px solid #000;
+    border-radius: 5px;
+
+    font-size: 12px;
+    font-weight: 800;
+}
+
+
+/* Save */
+
+#save-draft-btn {
+    background: #fff;
+}
+
+
+/* Publish */
+
+#publish-btn {
+    background: #000;
+    color: #fff;
+}
+
+#publish-btn:hover {
+    background: #f4c531;
+    color: #000;
+}
+
+
+/* Download */
+
+#download-btn {
+    background: #fff;
+}
+
+
+/* Share */
+
+#share-btn {
+    background: #f4c531;
+}
+
+
+/* =====================================================
+   OPTIONAL ACTION CLASSES
+===================================================== */
+
+.btn-primary {
+    background: #000;
+    color: #fff;
+
+    border: 2px solid #000;
+}
+
+.btn-primary:hover {
+    background: #f4c531;
+    color: #000;
+}
+
+.btn-secondary {
+    background: #fff;
+    color: #000;
+
+    border: 2px solid #000;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 800px) {
+
+    nav {
+        height: auto;
+
+        padding: 15px 18px;
+
+        gap: 14px;
+    }
+
+    nav ul {
+        gap: 12px;
+    }
+
+    .wrapper {
+        width: calc(100% - 28px);
+
+        padding: 25px 20px 30px;
+
+        margin: 25px auto 35px;
+    }
+
+    .editor-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 12px;
+    }
+
+    .grid-settings {
+        grid-template-columns: 1fr;
+
+        gap: 16px;
+    }
+
+    .container {
+        min-height: 320px;
+
+        padding: 15px;
+    }
+}
+
+
+@media (max-width: 520px) {
+
+    nav {
+        flex-direction: column;
+    }
+
+    nav ul {
+        flex-wrap: wrap;
+
+        justify-content: center;
+    }
+
+    .wrapper {
+        width: calc(100% - 18px);
+
+        padding: 20px 15px 25px;
+
+        box-shadow: 5px 5px 0 #000;
+    }
+
+    .editor-header h2 {
+        font-size: 23px;
+    }
+
+    .tool-bar {
+        flex-wrap: wrap;
+    }
+
+    .action-wrapper {
+        flex-wrap: wrap;
+    }
+
+    .action-wrapper button {
+        flex: 1;
+    }
 }
