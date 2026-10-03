@@ -738,3 +738,407 @@ button:active {
         flex: 1;
     }
 }
+
+/* =====================================================
+   PIXEL STUDIO - CURRENT EDITOR POLISH
+   ===================================================== */
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+
+/* -------------------------
+   GRID CONTROLS
+------------------------- */
+
+.options > .opt-wrapper:first-child {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+
+    margin-bottom: 18px;
+}
+
+.slider {
+    display: grid;
+    grid-template-columns: 82px minmax(120px, 1fr) 42px;
+    align-items: center;
+    gap: 12px;
+}
+
+.slider label {
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.slider input[type="range"] {
+    width: 100%;
+    accent-color: #111;
+    cursor: pointer;
+}
+
+.slider span {
+    min-width: 42px;
+
+    padding: 5px 7px;
+
+    background: #f4c531;
+
+    border: 2px solid #111;
+    border-radius: 4px;
+
+    text-align: center;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+
+/* -------------------------
+   GRID / TOOL BUTTON ROW
+------------------------- */
+
+.options > .opt-wrapper:nth-child(2) {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+
+    border-bottom: 1px solid #ddd;
+}
+
+.options > .opt-wrapper:nth-child(2) button {
+    min-height: 36px;
+
+    padding: 7px 13px;
+
+    background: #fff;
+
+    color: #111;
+
+    border: 2px solid #111;
+    border-radius: 4px;
+
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.1s ease,
+        box-shadow 0.1s ease,
+        background 0.1s ease;
+}
+
+.options > .opt-wrapper:nth-child(2) button:hover {
+    background: #f4c531;
+
+    transform: translateY(-1px);
+
+    box-shadow: 2px 2px 0 #111;
+}
+
+.options > .opt-wrapper:nth-child(2) #submit-grid {
+    background: #111;
+    color: #fff;
+}
+
+.options > .opt-wrapper:nth-child(2) #submit-grid:hover {
+    background: #333;
+}
+
+
+/* -------------------------
+   COLOR PICKER
+------------------------- */
+
+#color-input {
+    width: 38px;
+    height: 38px;
+
+    padding: 3px;
+
+    background: #fff;
+
+    border: 2px solid #111;
+    border-radius: 4px;
+
+    cursor: pointer;
+}
+
+#color-input::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+#color-input::-webkit-color-swatch {
+    border: none;
+    border-radius: 2px;
+}
+
+
+/* -------------------------
+   SELECTED TOOL
+------------------------- */
+
+.selectedEditControl {
+    background: #f4c531 !important;
+    color: #111 !important;
+
+    border-color: #111 !important;
+
+    box-shadow: 2px 2px 0 #111;
+}
+
+
+/* -------------------------
+   PALETTE
+------------------------- */
+
+.options > .opt-wrapper:nth-child(3) {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 10px;
+
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+
+    border-bottom: 1px solid #ddd;
+}
+
+.options > .opt-wrapper:nth-child(3) > div:first-child {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    width: 100%;
+}
+
+#fetch-palette-btn {
+    padding: 7px 12px;
+
+    background: #fff !important;
+    color: #111 !important;
+
+    border: 2px solid #111;
+    border-radius: 4px;
+
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+#fetch-palette-btn:hover {
+    background: #f4c531 !important;
+
+    transform: translateY(-1px);
+
+    box-shadow: 2px 2px 0 #111;
+}
+
+#palette-status {
+    font-size: 10px !important;
+    color: #777 !important;
+}
+
+#palette-container {
+    min-height: 58px;
+
+    width: 100%;
+
+    padding: 9px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    background: #fafafa;
+
+    border: 2px solid #111;
+    border-radius: 5px;
+}
+
+#palette-container:empty::before {
+    content: "Your random palette will appear here";
+
+    color: #999;
+
+    font-size: 10px;
+}
+
+#palette-container button {
+    width: 34px !important;
+    height: 34px !important;
+
+    flex-shrink: 0;
+
+    border: 2px solid #111 !important;
+    border-radius: 4px !important;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.1s ease,
+        box-shadow 0.1s ease;
+}
+
+#palette-container button:hover {
+    transform: translateY(-2px);
+
+    box-shadow: 2px 2px 0 #111;
+}
+
+
+/* -------------------------
+   ACTION BUTTONS
+------------------------- */
+
+.action-wrapper {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    flex-wrap: wrap;
+
+    margin-bottom: 25px;
+}
+
+.action-wrapper button {
+    min-height: 36px;
+
+    padding: 7px 13px;
+
+    border: 2px solid #111;
+    border-radius: 4px;
+
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.1s ease,
+        box-shadow 0.1s ease;
+}
+
+.action-wrapper button:hover {
+    transform: translateY(-1px);
+
+    box-shadow: 2px 2px 0 #111;
+}
+
+.action-wrapper .btn-secondary {
+    background: #fff;
+    color: #111;
+}
+
+.action-wrapper .btn-primary {
+    background: #111;
+    color: #fff;
+}
+
+
+/* Override the inline colors on the HTML buttons */
+
+#download-png-btn {
+    background: #fff !important;
+    color: #111 !important;
+}
+
+#share-art-btn {
+    background: #f4c531 !important;
+    color: #111 !important;
+}
+
+
+/* -------------------------
+   CANVAS AREA
+------------------------- */
+
+.container {
+    min-height: 430px;
+
+    padding: 28px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    overflow: auto;
+
+    background: #fff;
+
+    border: 2px dashed #111;
+
+    border-radius: 5px;
+}
+
+
+/*
+   IMPORTANT:
+   No checkerboard / decorative CSS
+   background behind the canvas.
+*/
+
+.container canvas {
+    display: block;
+
+    max-width: 100%;
+    height: auto;
+
+    background: #fff;
+
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.18);
+
+    touch-action: none;
+}
+
+
+/* -------------------------
+   RESPONSIVE
+------------------------- */
+
+@media (max-width: 750px) {
+
+    .options > .opt-wrapper:first-child {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .options > .opt-wrapper:nth-child(2) {
+        flex-wrap: wrap;
+    }
+
+    .action-wrapper {
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .action-wrapper button {
+        width: 100%;
+    }
+}
