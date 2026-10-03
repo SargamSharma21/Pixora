@@ -143,17 +143,18 @@ logoutBtn.addEventListener("click", () => {
    CREATE GRID
 ===================================================== */
 
-function createGrid(r, c, savedGrid = null) {
-
-    rows = parseInt(r);
-    cols = parseInt(c);
-
+function updateCanvasSize() {
     canvas.width =
         cols * CELL_SIZE + LABEL_SIZE;
 
     canvas.height =
         rows * CELL_SIZE + LABEL_SIZE;
+}
+function createGrid(r, c, savedGrid = null) {
 
+    rows = parseInt(r);
+    cols = parseInt(c);
+    updateCanvasSize();
 
     if (
         savedGrid &&
@@ -483,34 +484,44 @@ window.addEventListener(
 
 function getCellFromTouch(e) {
 
-    const rect =
-        canvas.getBoundingClientRect();
+    const rect = canvas.getBoundingClientRect();
 
-    const touch =
-        e.touches[0];
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
 
+    const touch = e.touches[0];
 
     const x =
-        touch.clientX -
-        rect.left;
+        (touch.clientX - rect.left) * scaleX;
 
     const y =
-        touch.clientY -
-        rect.top;
+        (touch.clientY - rect.top) * scaleY;
 
+    // Ignore row/column label area
+    if (
+        x < LABEL_SIZE ||
+        y < LABEL_SIZE
+    ) {
+        return {
+            row: -1,
+            col: -1
+        };
+    }
+
+    const col =
+        Math.floor(
+            (x - LABEL_SIZE) / CELL_SIZE
+        );
+
+    const row =
+        Math.floor(
+            (y - LABEL_SIZE) / CELL_SIZE
+        );
 
     return {
-
-        row: Math.floor(
-            y / CELL_SIZE
-        ),
-
-        col: Math.floor(
-            x / CELL_SIZE
-        )
-
+        row,
+        col
     };
-
 }
 
 
@@ -697,24 +708,12 @@ gridHeight.addEventListener(
 
 pixelSizeRange.addEventListener("input", () => {
 
-    CELL_SIZE =
-        parseInt(pixelSizeRange.value);
+    CELL_SIZE = parseInt(pixelSizeRange.value);
 
     pixelSizeValue.innerText =
         `${CELL_SIZE}px`;
 
-    /*
-        Re-render only.
-
-        Matrix stays exactly the same.
-        So artwork is NOT destroyed.
-    */
-
-    canvas.width =
-        cols * CELL_SIZE + LABEL_SIZE;
-
-    canvas.height =
-        rows * CELL_SIZE + LABEL_SIZE;
+    updateCanvasSize();
 
     renderCanvas();
 });
@@ -843,92 +842,85 @@ saveDraftBtn.addEventListener(
 /* =====================================================
    PUBLISH
 ===================================================== */
+// POST TO PUBLIC FEED
 
-postArtBtn.addEventListener(
-    "click",
-    () => {
+postArtBtn.addEventListener("click", () => {
 
-        const title =
-            titleInput.value.trim() ||
-            "Untitled Post";
+    const title =
+        titleInput.value.trim() ||
+        "Untitled Post";
+
+    let publishedArtworks =
+        JSON.parse(
+            localStorage.getItem("pixel_artworks")
+        ) || [];
+
+    const artwork = {
+
+        id: Date.now().toString(),
+
+        owner: currentUser,
+
+        draftId: currentDraftId,
+
+        title: title,
+
+        rows: rows,
+
+        cols: cols,
+
+        pixelSize: CELL_SIZE,
+
+        matrix: JSON.parse(
+            JSON.stringify(matrix)
+        ),
+
+        publishedAt:
+            new Date().toISOString(),
+
+        likes: [],
+
+        comments: []
+    };
 
 
-        let posts =
+    publishedArtworks.push(artwork);
+
+
+    localStorage.setItem(
+        "pixel_artworks",
+        JSON.stringify(publishedArtworks)
+    );
+
+
+    // Remove draft only after publishing
+    if (currentDraftId) {
+
+        let drafts =
             JSON.parse(
-                localStorage.getItem(
-                    "pixel_posts"
-                )
+                localStorage.getItem("pixel_drafts")
             ) || [];
 
-
-        const postData = {
-
-            id:
-                Date.now().toString(),
-
-            creator:
-                currentUser,
-
-            title:
-                title,
-
-            rows:
-                rows,
-
-            cols:
-                cols,
-
-            matrix:
-                getGridMatrix()
-
-        };
-
-
-        posts.push(
-            postData
-        );
-
-
-        localStorage.setItem(
-            "pixel_posts",
-            JSON.stringify(posts)
-        );
-
-
-        /* Remove corresponding draft */
-
-        if (currentDraftId) {
-
-            let drafts =
-                JSON.parse(
-                    localStorage.getItem(
-                        "pixel_drafts"
+        drafts =
+            drafts.filter(
+                draft =>
+                    !(
+                        draft.id === currentDraftId &&
+                        draft.owner === currentUser
                     )
-                ) || [];
-
-
-            drafts =
-                drafts.filter(
-                    draft =>
-                        draft.id !==
-                        currentDraftId
-                );
-
-
-            localStorage.setItem(
-                "pixel_drafts",
-                JSON.stringify(drafts)
             );
 
-        }
-
-
-        window.location.href =
-            "feed.html";
-
+        localStorage.setItem(
+            "pixel_drafts",
+            JSON.stringify(drafts)
+        );
     }
-);
 
+
+    // Go to feed
+    window.location.href =
+        "feed.html";
+});
 
 /* =====================================================
    DOWNLOAD PNG

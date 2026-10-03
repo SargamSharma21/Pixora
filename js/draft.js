@@ -171,7 +171,13 @@ if (userDrafts.length === 0) {
 
                     cols: draft.cols,
 
+                    pixelSize: draft.pixelSize,
+
                     matrix: draft.matrix,
+
+                    likes: [],
+
+                    comments: [],
 
                     publishedAt:
                         new Date().toISOString()
@@ -186,6 +192,17 @@ if (userDrafts.length === 0) {
                     JSON.stringify(
                         publishedArtworks
                     )
+                );
+
+
+                drafts = drafts.filter(
+                    item =>
+                        !(item.id === draft.id && item.owner === currentUser)
+                );
+
+                localStorage.setItem(
+                    "pixel_drafts",
+                    JSON.stringify(drafts)
                 );
 
 

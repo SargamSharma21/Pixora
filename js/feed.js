@@ -16,6 +16,35 @@ let artworks =
         localStorage.getItem("pixel_artworks")
     ) || [];
 
+const legacyPosts =
+    JSON.parse(
+        localStorage.getItem("pixel_posts")
+    ) || [];
+
+if (legacyPosts.length > 0) {
+    const artworkIds = new Set(
+        artworks.map(artwork => artwork.id)
+    );
+
+    legacyPosts.forEach(post => {
+        if (!artworkIds.has(post.id)) {
+            artworks.push({
+                ...post,
+                owner: post.owner || post.creator,
+                likes: Array.isArray(post.likes) ? post.likes : [],
+                comments: Array.isArray(post.comments) ? post.comments : [],
+                publishedAt: post.publishedAt || post.createdAt
+            });
+        }
+    });
+
+    localStorage.setItem(
+        "pixel_artworks",
+        JSON.stringify(artworks)
+    );
+    localStorage.removeItem("pixel_posts");
+}
+
 
 if (artworks.length === 0) {
 
