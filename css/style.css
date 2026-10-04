@@ -446,6 +446,11 @@
     scrollbar-color: #17120f #f3e5bf;
 }
 
+.editor-layout.collapsed .container {
+    min-height: 72vh;
+    max-height: 82vh;
+}
+
 .container canvas {
     display: block;
     flex: 0 0 auto;
