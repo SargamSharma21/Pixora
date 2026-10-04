@@ -1,0 +1,28 @@
+# macOS and Windows files
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+Desktop.ini
+
+# IDE and editor settings
+.vscode/
+.vs/
+.idea/
+*.code-workspace
+*.swp
+*.swo
+*~
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+
+# Runtime and build artifacts
+*.log
+node_modules/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
