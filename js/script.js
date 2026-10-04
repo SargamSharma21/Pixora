@@ -84,6 +84,12 @@ const paletteStatus =
 const logoutBtn =
     document.getElementById("logout-btn");
 
+const toolboxToggleBtn =
+    document.getElementById("toggle-toolbox-btn");
+
+const editorLayout =
+    document.getElementById("editor-layout");
+
 const pixelSizeRange =
     document.getElementById("pixel-size-range");
 
@@ -137,6 +143,22 @@ logoutBtn.addEventListener("click", () => {
         "login.html";
 
 });
+
+if (toolboxToggleBtn && editorLayout) {
+
+    toolboxToggleBtn.addEventListener("click", () => {
+
+        const isCollapsed =
+            editorLayout.classList.toggle("collapsed");
+
+        toolboxToggleBtn.textContent =
+            isCollapsed
+                ? "Open toolbox"
+                : "Hide toolbox";
+
+    });
+
+}
 
 
 /* =====================================================
@@ -400,7 +422,7 @@ function getCellFromCoordinates(e) {
    PAINT CELL
 ===================================================== */
 
-function paintCell(e) {
+function paintCell(e, forceErase = false) {
 
     const {
         row,
@@ -422,7 +444,7 @@ function paintCell(e) {
 
 
     const targetColor =
-        erase
+        erase || forceErase
             ? "transparent"
             : colorButton.value;
 
@@ -444,9 +466,26 @@ canvas.addEventListener(
     "mousedown",
     (e) => {
 
+        if (e.button === 2) {
+
+            e.preventDefault();
+            paintCell(e, true);
+            return;
+
+        }
+
         draw = true;
 
         paintCell(e);
+
+    }
+);
+
+canvas.addEventListener(
+    "contextmenu",
+    (e) => {
+
+        e.preventDefault();
 
     }
 );

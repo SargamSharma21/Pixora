@@ -10,17 +10,17 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Pixel Studio</title>
+    <title>PIXORA - Studio</title>
 
     <link
         rel="stylesheet"
         href="css/style.css"
     >
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap"
-        rel="stylesheet"
-    >
+        <link
+            rel="stylesheet"
+            href="css/shared.css?v=2"
+        >
 
 </head>
 
@@ -31,12 +31,12 @@
 
     <nav>
 
-        <h1>👾 PIXORA</h1>
+        <h1>PIXORA</h1>
 
         <ul>
 
             <li>
-                <a href="index.html">
+                <a href="index.html" class="active">
                     Studio
                 </a>
             </li>
@@ -54,7 +54,13 @@
             </li>
 
             <li>
-                <button id="logout-btn">
+                <a href="profile.html">
+                    Profile
+                </a>
+            </li>
+
+            <li>
+                <button id="logout-btn" type="button">
                     Logout
                 </button>
             </li>
@@ -67,9 +73,6 @@
     <!-- ================= MAIN EDITOR ================= -->
 
     <main class="wrapper">
-
-
-        <!-- HEADER -->
 
         <div class="editor-header">
 
@@ -85,12 +88,14 @@
 
             </div>
 
-            <span id="user-display"></span>
+            <div class="editor-header-actions">
+                <button id="toggle-toolbox-btn" class="toolbox-toggle" type="button">
+                    Hide toolbox
+                </button>
+                <span id="user-display"></span>
+            </div>
 
         </div>
-
-
-        <!-- ================= TITLE ================= -->
 
         <div class="title-meta">
 
@@ -107,294 +112,252 @@
 
         </div>
 
+        <div class="editor-layout" id="editor-layout">
 
-        <!-- ================= GRID ================= -->
+            <aside class="editor-sidebar" id="editor-sidebar">
 
-        <section class="editor-section">
+                <section class="editor-section">
 
-            <div class="section-heading">
+                    <div class="section-heading">
 
-                <div>
+                        <div>
 
-                    <h3>
-                        Grid
-                    </h3>
+                            <h3>
+                                Grid
+                            </h3>
 
-                    <span>
-                        Canvas size
-                    </span>
+                            <span>
+                                Canvas size
+                            </span>
 
-                </div>
+                        </div>
 
-            </div>
+                    </div>
 
+                    <div class="grid-settings">
 
-            <div class="grid-settings">
+                        <div class="slider-control">
 
+                            <label for="width-range">
+                                Width
+                            </label>
 
-                <!-- WIDTH -->
+                            <input
+                                type="range"
+                                id="width-range"
+                                min="1"
+                                max="35"
+                                value="16"
+                            >
 
-                <div class="slider-control">
+                            <span id="width-value">
+                                16
+                            </span>
 
-                    <label for="width-range">
-                        Width
-                    </label>
+                        </div>
 
-                    <input
-                        type="range"
-                        id="width-range"
-                        min="1"
-                        max="35"
-                        value="16"
+                        <div class="slider-control">
+
+                            <label for="height-range">
+                                Height
+                            </label>
+
+                            <input
+                                type="range"
+                                id="height-range"
+                                min="1"
+                                max="35"
+                                value="16"
+                            >
+
+                            <span id="height-value">
+                                16
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="slider">
+                        <label for="pixel-size-range">Pixel Size</label>
+
+                        <input
+                            type="range"
+                            id="pixel-size-range"
+                            min="10"
+                            max="40"
+                            value="20"
+                        >
+
+                        <span id="pixel-size-value">20px</span>
+                    </div>
+
+                    <button
+                        id="submit-grid"
+                        class="create-grid-btn"
                     >
+                        Create Grid
+                    </button>
 
-                    <span id="width-value">
-                        16
-                    </span>
+                </section>
 
-                </div>
+                <section class="editor-section">
 
+                    <div class="section-heading">
 
-                <!-- HEIGHT -->
+                        <div>
 
-                <div class="slider-control">
+                            <h3>
+                                Tools
+                            </h3>
 
-                    <label for="height-range">
-                        Height
-                    </label>
+                            <span>
+                                Choose your brush
+                            </span>
 
-                    <input
-                        type="range"
-                        id="height-range"
-                        min="1"
-                        max="35"
-                        value="16"
+                        </div>
+
+                    </div>
+
+                    <div class="tool-bar">
+
+                        <div class="color-wrapper">
+
+                            <input
+                                type="color"
+                                id="color-input"
+                                value="#000000"
+                            >
+
+                        </div>
+
+                        <button
+                            id="paint-btn"
+                            class="editControls selectedEditControl tool-btn"
+                        >
+                            ✏️ Paint
+                        </button>
+
+                        <button
+                            id="erase-btn"
+                            class="editControls tool-btn"
+                        >
+                            🧹 Erase
+                        </button>
+
+                        <button
+                            id="clear-grid"
+                            class="tool-btn danger-light"
+                        >
+                            🗑 Clear
+                        </button>
+
+                    </div>
+
+                </section>
+
+                <section class="editor-section palette-section">
+
+                    <div class="section-heading">
+
+                        <div>
+
+                            <h3>
+                                Palette
+                            </h3>
+
+                            <span id="palette-status">
+                                Generate a palette for inspiration
+                            </span>
+
+                        </div>
+
+                        <button
+                            id="fetch-palette-btn"
+                            class="palette-btn"
+                        >
+                            ↻ Random
+                        </button>
+
+                    </div>
+
+                    <div
+                        id="palette-container"
+                        class="palette-container"
+                    ></div>
+
+                </section>
+
+            </aside>
+
+            <div class="editor-canvas-panel">
+
+                <section class="canvas-section">
+
+                    <div class="section-heading">
+
+                        <div>
+
+                            <h3>
+                                Canvas
+                            </h3>
+
+                            <span>
+                                Click and drag to draw
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="container">
+
+                        <canvas id="pixel-canvas"></canvas>
+
+                    </div>
+
+                </section>
+
+                <div class="action-wrapper">
+
+                    <button
+                        id="save-draft-btn"
+                        class="btn-secondary"
                     >
+                        Save Draft
+                    </button>
 
-                    <span id="height-value">
-                        16
-                    </span>
-
-                </div>
-
-            </div>
-            
-            <div class="slider">
-                <label for="pixel-size-range">Pixel Size</label>
-
-                <input
-                    type="range"
-                    id="pixel-size-range"
-                    min="10"
-                    max="40"
-                    value="20"
-                >
-
-                <span id="pixel-size-value">20px</span>
-            </div>
-
-            <button
-                id="submit-grid"
-                class="create-grid-btn"
-            >
-                Create Grid
-            </button>
-
-        </section>
-
-
-        <!-- ================= TOOLS ================= -->
-
-        <section class="editor-section">
-
-            <div class="section-heading">
-
-                <div>
-
-                    <h3>
-                        Tools
-                    </h3>
-
-                    <span>
-                        Choose your brush
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <div class="tool-bar">
-
-
-                <!-- COLOR -->
-
-                <div class="color-wrapper">
-
-                    <input
-                        type="color"
-                        id="color-input"
-                        value="#000000"
+                    <button
+                        id="post-art-btn"
+                        class="btn-primary"
                     >
+                        Publish
+                    </button>
 
-                </div>
+                    <button
+                        id="download-png-btn"
+                        class="btn-secondary"
+                    >
+                        ↓ PNG
+                    </button>
 
-
-                <!-- PAINT -->
-
-                <button
-                    id="paint-btn"
-                    class="editControls selectedEditControl tool-btn"
-                >
-                    ✏️ Paint
-                </button>
-
-
-                <!-- ERASE -->
-
-                <button
-                    id="erase-btn"
-                    class="editControls tool-btn"
-                >
-                    🧹 Erase
-                </button>
-
-
-                <!-- CLEAR -->
-
-                <button
-                    id="clear-grid"
-                    class="tool-btn danger-light"
-                >
-                    🗑 Clear
-                </button>
-
-            </div>
-
-        </section>
-
-
-        <!-- ================= PALETTE ================= -->
-
-        <section class="editor-section palette-section">
-
-            <div class="section-heading">
-
-                <div>
-
-                    <h3>
-                        Palette
-                    </h3>
-
-                    <span id="palette-status">
-                        Generate a palette for inspiration
-                    </span>
-
-                </div>
-
-
-                <button
-                    id="fetch-palette-btn"
-                    class="palette-btn"
-                >
-                    ↻ Random
-                </button>
-
-            </div>
-
-
-            <div
-                id="palette-container"
-                class="palette-container"
-            ></div>
-
-        </section>
-
-
-        <!-- ================= CANVAS ================= -->
-
-        <section class="canvas-section">
-
-            <div class="section-heading">
-
-                <div>
-
-                    <h3>
-                        Canvas
-                    </h3>
-
-                    <span>
-                        Click and drag to draw
-                    </span>
+                    <button
+                        id="share-art-btn"
+                        class="btn-share"
+                    >
+                        ↗ Share
+                    </button>
 
                 </div>
 
             </div>
-
-
-            <div class="container">
-
-                <!-- IMPORTANT:
-                     script.js expects this exact ID -->
-
-                <canvas id="pixel-canvas"></canvas>
-
-            </div>
-
-        </section>
-
-
-        <!-- ================= ACTIONS ================= -->
-
-        <div class="action-wrapper">
-
-
-            <!-- SAVE -->
-
-            <button
-                id="save-draft-btn"
-                class="btn-secondary"
-            >
-                Save Draft
-            </button>
-
-
-            <!-- PUBLISH -->
-
-            <button
-                id="post-art-btn"
-                class="btn-primary"
-            >
-                Publish
-            </button>
-
-
-            <!-- DOWNLOAD -->
-
-            <button
-                id="download-png-btn"
-                class="btn-secondary"
-            >
-                ↓ PNG
-            </button>
-
-
-            <!-- SHARE -->
-
-            <button
-                id="share-art-btn"
-                class="btn-share"
-            >
-                ↗ Share
-            </button>
 
         </div>
-
 
     </main>
 
 
-    <script src="js/script.js"></script>
+    <script src="js/script.js?v=3"></script>
 
 </body>
 

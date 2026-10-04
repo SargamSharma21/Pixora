@@ -264,85 +264,10 @@ function createArtworkPreview(
         );
 
 
-    renderArtwork(
+    renderArtworkCanvas(
         canvas,
-        artwork
+        artwork,
+        12
     );
-
-}
-
-
-// -------------------------
-// RENDER ARTWORK
-// -------------------------
-
-function renderArtwork(
-    canvas,
-    artwork
-) {
-
-    const ctx =
-        canvas.getContext("2d");
-
-
-    const CELL_SIZE = 12;
-
-
-    canvas.width =
-        artwork.cols * CELL_SIZE;
-
-    canvas.height =
-        artwork.rows * CELL_SIZE;
-
-
-    for (
-        let row = 0;
-        row < artwork.rows;
-        row++
-    ) {
-
-        for (
-            let col = 0;
-            col < artwork.cols;
-            col++
-        ) {
-
-            const color =
-                artwork.matrix[row][col];
-
-
-            if (
-                color !== "transparent"
-            ) {
-
-                ctx.fillStyle =
-                    color;
-
-                ctx.fillRect(
-                    col * CELL_SIZE,
-                    row * CELL_SIZE,
-                    CELL_SIZE,
-                    CELL_SIZE
-                );
-
-            }
-
-
-            ctx.strokeStyle =
-                "#ddd";
-
-            ctx.lineWidth = 1;
-
-
-            ctx.strokeRect(
-                col * CELL_SIZE,
-                row * CELL_SIZE,
-                CELL_SIZE,
-                CELL_SIZE
-            );
-
-        }
-
-    }
 
 }

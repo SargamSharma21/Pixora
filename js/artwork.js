@@ -1,67 +1,102 @@
 const currentUser =
     localStorage.getItem("logged_in_user");
 
-
 if (!currentUser) {
-
-    window.location.href =
-        "login.html";
-
+    window.location.href = "login.html";
 }
 
 
-const container =
-    document.getElementById(
-        "artwork-container"
-    );
+/* =========================================
+   CONTAINER
+========================================= */
 
+const container =
+    document.getElementById("artwork-container");
+
+
+/* =========================================
+   GET ARTWORK ID
+========================================= */
 
 const params =
     new URLSearchParams(
         window.location.search
     );
 
-
 const artworkId =
     params.get("id");
 
 
-const artworks =
+/* =========================================
+   GET POSTS
+========================================= */
+
+let artworks =
     JSON.parse(
-        localStorage.getItem(
-            "pixel_artworks"
-        )
+        localStorage.getItem("pixel_artworks")
     ) || [];
 
+
+/* =========================================
+   FIND POST
+========================================= */
 
 const artwork =
     artworks.find(
         item =>
-            item.id === artworkId
+            String(item.id) ===
+            String(artworkId)
     );
 
+
+/* =========================================
+   ARTWORK NOT FOUND
+========================================= */
 
 if (!artwork) {
 
     container.innerHTML = `
-        <h2>Artwork not found.</h2>
+
+        <div class="artwork-error">
+
+            <h2>
+                Artwork not found
+            </h2>
+
+            <p>
+                This artwork may have been
+                deleted or is no longer available.
+            </p>
+
+            <a href="feed.html">
+                ← Back to Feed
+            </a>
+
+        </div>
+
     `;
 
 } else {
 
-    renderArtworkPage(
-        artwork
-    );
+    renderArtworkPage(artwork);
 
 }
 
 
+/* =========================================
+   RENDER ARTWORK PAGE
+========================================= */
+
 function renderArtworkPage(artwork) {
+
+    /*
+       Older posts may not have these
+       properties, so create them.
+    */
 
     if (!Array.isArray(artwork.likes)) {
         artwork.likes = [];
     }
-
 
     if (!Array.isArray(artwork.comments)) {
         artwork.comments = [];
@@ -76,18 +111,39 @@ function renderArtworkPage(artwork) {
 
     container.innerHTML = `
 
-        <h2 class="artwork-title">
-            ${artwork.title}
-        </h2>
+        <div class="artwork-header">
 
-        <p class="artwork-author">
-            Created by ${artwork.owner}
-        </p>
+            <div>
+
+                <p class="artwork-label">
+                    PIXEL ARTWORK
+                </p>
+
+                <h2 class="artwork-title">
+                    ${escapeHTML(
+                        artwork.title
+                    )}
+                </h2>
+
+                <p class="artwork-author">
+                    Created by
+                    <strong>
+                        ${escapeHTML(
+                            artwork.owner || artwork.creator
+                        )}
+                    </strong>
+                </p>
+
+            </div>
+
+        </div>
 
 
         <div class="artwork-canvas-wrapper">
 
-            <canvas id="artwork-canvas"></canvas>
+            <canvas
+                id="artwork-canvas"
+            ></canvas>
 
         </div>
 
@@ -98,33 +154,48 @@ function renderArtworkPage(artwork) {
                 id="like-btn"
                 class="like-btn ${liked ? "liked" : ""}"
             >
-            <div class="artwork-actions">
 
-    <div class="artwork-actions">
+                ${liked ? "❤️" : "♡"}
 
-            <button
-                id="like-btn"
-                class="like-btn ${liked ? "liked" : ""}"
-            >
-
-            ${liked ? "❤️" : "♡"}
-
-            <span id="like-count">
-                ${artwork.likes.length}
-            </span>
+                <span id="like-count">
+                    ${artwork.likes.length}
+                </span>
 
             </button>
 
-        ${artwork.owner === currentUser ? `
-            <button
-                id="delete-artwork-btn"
-                class="delete-artwork-btn"
-            >
-                Delete Artwork
-            </button>
-        ` : ""}
 
-    </div>
+            <button
+                id="download-btn"
+                class="action-btn"
+            >
+                ↓ PNG
+            </button>
+
+
+            <button
+                id="share-btn"
+                class="action-btn"
+            >
+                ↗ Share
+            </button>
+
+
+            ${
+                (artwork.owner || artwork.creator) === currentUser
+                ?
+                `
+                    <button
+                        id="delete-artwork-btn"
+                        class="delete-artwork-btn"
+                    >
+                        Delete
+                    </button>
+                `
+                :
+                ""
+            }
+
+        </div>
 
 
         <div class="comments-section">
@@ -132,6 +203,7 @@ function renderArtworkPage(artwork) {
             <h3>
                 Comments
             </h3>
+
 
             <div
                 id="comments-list"
@@ -149,6 +221,7 @@ function renderArtworkPage(artwork) {
                     placeholder="Write a comment..."
                 >
 
+
                 <button
                     id="comment-btn"
                     class="comment-btn"
@@ -159,106 +232,43 @@ function renderArtworkPage(artwork) {
             </div>
 
         </div>
+
+
+        <div class="back-container">
+
+            <a href="feed.html">
+                ← Back to Feed
+            </a>
+
+        </div>
+
     `;
 
 
-    renderCanvas(
-        artwork
+    renderArtworkCanvas(
+        document.getElementById("artwork-canvas"),
+        artwork,
+        artwork.pixelSize || 20
     );
 
+    renderComments(artwork);
 
-    renderComments(
-        artwork
-    );
+    setupLike(artwork);
 
+    setupComments(artwork);
 
-    setupLike(
-        artwork
-    );
+    setupDelete(artwork);
 
+    setupDownload(artwork);
 
-    setupComments(
-        artwork
-    );
-
-    setupDelete(
-        artwork
-    );
+    setupShare();
 
 }
 
 
-function renderCanvas(artwork) {
-
-    const canvas =
-        document.getElementById(
-            "artwork-canvas"
-        );
-
-
-    const ctx =
-        canvas.getContext("2d");
-
-
-    const CELL_SIZE = 20;
-
-
-    canvas.width =
-        artwork.cols * CELL_SIZE;
-
-    canvas.height =
-        artwork.rows * CELL_SIZE;
-
-
-    for (
-        let row = 0;
-        row < artwork.rows;
-        row++
-    ) {
-
-        for (
-            let col = 0;
-            col < artwork.cols;
-            col++
-        ) {
-
-            const color =
-                artwork.matrix[row][col];
-
-
-            if (
-                color !== "transparent"
-            ) {
-
-                ctx.fillStyle =
-                    color;
-
-                ctx.fillRect(
-                    col * CELL_SIZE,
-                    row * CELL_SIZE,
-                    CELL_SIZE,
-                    CELL_SIZE
-                );
-
-            }
-
-
-            ctx.strokeStyle =
-                "#ddd";
-
-            ctx.strokeRect(
-                col * CELL_SIZE,
-                row * CELL_SIZE,
-                CELL_SIZE,
-                CELL_SIZE
-            );
-
-        }
-
-    }
-
-}
-
+/* =========================================
+   LIKE
+========================================= */
 
 function setupLike(artwork) {
 
@@ -310,11 +320,13 @@ function setupLike(artwork) {
 
 
             button.innerHTML = `
+
                 ${liked ? "❤️" : "♡"}
 
                 <span id="like-count">
                     ${artwork.likes.length}
                 </span>
+
             `;
 
         }
@@ -322,6 +334,10 @@ function setupLike(artwork) {
 
 }
 
+
+/* =========================================
+   COMMENTS
+========================================= */
 
 function renderComments(artwork) {
 
@@ -334,15 +350,18 @@ function renderComments(artwork) {
     list.innerHTML = "";
 
 
-    if (artwork.comments.length === 0) {
+    if (
+        artwork.comments.length === 0
+    ) {
 
         list.innerHTML = `
-            <p>
+            <p class="no-comments">
                 No comments yet.
             </p>
         `;
 
         return;
+
     }
 
 
@@ -363,10 +382,16 @@ function renderComments(artwork) {
             element.innerHTML = `
 
                 <strong>
-                    ${comment.author}
+                    ${escapeHTML(
+                        comment.author
+                    )}
                 </strong>
 
-                ${comment.text}
+                <span>
+                    ${escapeHTML(
+                        comment.text
+                    )}
+                </span>
 
             `;
 
@@ -380,6 +405,10 @@ function renderComments(artwork) {
 
 }
 
+
+/* =========================================
+   COMMENT BUTTON
+========================================= */
 
 function setupComments(artwork) {
 
@@ -412,7 +441,9 @@ function setupComments(artwork) {
         "keydown",
         event => {
 
-            if (event.key === "Enter") {
+            if (
+                event.key === "Enter"
+            ) {
 
                 addComment(
                     artwork,
@@ -426,6 +457,10 @@ function setupComments(artwork) {
 
 }
 
+
+/* =========================================
+   ADD COMMENT
+========================================= */
 
 function addComment(
     artwork,
@@ -471,31 +506,24 @@ function addComment(
 }
 
 
-function saveArtworks() {
-
-    localStorage.setItem(
-        "pixel_artworks",
-        JSON.stringify(
-            artworks
-        )
-    );
-
-}
+/* =========================================
+   DELETE
+========================================= */
 
 function setupDelete(artwork) {
 
-    const deleteButton =
+    const button =
         document.getElementById(
             "delete-artwork-btn"
         );
 
 
-    if (!deleteButton) {
+    if (!button) {
         return;
     }
 
 
-    deleteButton.addEventListener(
+    button.addEventListener(
         "click",
         () => {
 
@@ -510,35 +538,17 @@ function setupDelete(artwork) {
             }
 
 
-            const artworkIndex =
-                artworks.findIndex(
+            artworks =
+                artworks.filter(
                     item =>
-                        item.id === artwork.id &&
-                        item.owner === currentUser
+                        String(item.id) !==
+                        String(artwork.id)
                 );
 
 
-            if (artworkIndex === -1) {
-
-                alert(
-                    "You cannot delete this artwork."
-                );
-
-                return;
-            }
-
-
-            artworks.splice(
-                artworkIndex,
-                1
-            );
-
-
-            saveArtworks();
-
-
-            alert(
-                "Artwork deleted successfully."
+            localStorage.setItem(
+                "pixel_artworks",
+                JSON.stringify(artworks)
             );
 
 
@@ -547,5 +557,174 @@ function setupDelete(artwork) {
 
         }
     );
+
+}
+
+
+/* =========================================
+   DOWNLOAD
+========================================= */
+
+function setupDownload(artwork) {
+
+    const button =
+        document.getElementById(
+            "download-btn"
+        );
+
+
+    button.addEventListener(
+        "click",
+        () => {
+
+            const canvas =
+                document.getElementById(
+                    "artwork-canvas"
+                );
+
+
+            const link =
+                document.createElement(
+                    "a"
+                );
+
+
+            link.download =
+                `${artwork.title
+                    .replace(
+                        /[^a-z0-9]/gi,
+                        "_"
+                    )
+                    .toLowerCase()
+                }.png`;
+
+
+            link.href =
+                canvas.toDataURL(
+                    "image/png"
+                );
+
+
+            link.click();
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   SHARE
+========================================= */
+
+function setupShare() {
+
+    const button =
+        document.getElementById(
+            "share-btn"
+        );
+
+
+    button.addEventListener(
+        "click",
+        async () => {
+
+            const shareData = {
+
+                title:
+                    document.title,
+
+                text:
+                    "Check out this pixel artwork on PIXELFORGE!",
+
+                url:
+                    window.location.href
+
+            };
+
+
+            if (
+                navigator.share
+            ) {
+
+                try {
+
+                    await navigator.share(
+                        shareData
+                    );
+
+                } catch (error) {
+
+                    console.log(
+                        "Share cancelled"
+                    );
+
+                }
+
+            } else {
+
+                await navigator.clipboard.writeText(
+                    window.location.href
+                );
+
+
+                alert(
+                    "Artwork link copied!"
+                );
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   SAVE POSTS
+========================================= */
+
+function saveArtworks() {
+
+    localStorage.setItem(
+        "pixel_artworks",
+        JSON.stringify(artworks)
+    );
+
+}
+
+
+/* =========================================
+   ESCAPE HTML
+========================================= */
+
+function escapeHTML(value) {
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }

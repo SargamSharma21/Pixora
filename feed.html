@@ -13,13 +13,16 @@
     <link rel="stylesheet"
           href="css/feed.css">
 
+            <link rel="stylesheet"
+                href="css/shared.css?v=2">
+
 </head>
 
 <body>
 
     <nav>
 
-        <h1>👾 PIXORA</h1>
+        <h1>PIXORA</h1>
 
         <ul>
 
@@ -28,15 +31,19 @@
             </li>
 
             <li>
+                <a href="feed.html" class="active">Public Feed</a>
+            </li>
+
+            <li>
                 <a href="draft.html">My Drafts</a>
             </li>
 
             <li>
-                <a href="feed.html">Feed</a>
+                <a href="profile.html">Profile</a>
             </li>
 
             <li>
-                <a href="profile.html">Profile</a>
+                <button id="logout-btn" type="button">Logout</button>
             </li>
 
         </ul>
@@ -53,7 +60,15 @@
     </main>
 
 
+    <script src="js/artwork-renderer.js"></script>
     <script src="js/feed.js"></script>
+    <script>
+        const feedLogoutBtn = document.getElementById("logout-btn");
+        feedLogoutBtn?.addEventListener("click", () => {
+            localStorage.removeItem("logged_in_user");
+            window.location.href = "login.html";
+        });
+    </script>
 
 </body>
 

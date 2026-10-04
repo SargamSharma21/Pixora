@@ -1,132 +1,56 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-
-    font-family: "Roboto Mono", monospace;
-}
-
-body {
-    background-color: #f4c531;
-}
-
-
-nav {
-    background: #ffffff;
-
-    padding: 15px 30px;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    border-bottom: 4px solid #000;
-}
-
-
-nav h1 {
-    font-size: 22px;
-}
-
-
-nav ul {
-    display: flex;
-
-    list-style: none;
-
-    gap: 20px;
-}
-
-
-nav a {
-    text-decoration: none;
-
-    color: #000;
-
-    font-weight: bold;
-}
-
-
 .profile-wrapper {
-
-    width: 80%;
-
-    max-width: 700px;
-
-    margin: 40px auto;
-
-    padding: 30px;
-
-    background-color: #ffffff;
-
-    border: 4px solid #000;
-
-    border-radius: 8px;
-
-    box-shadow: 8px 8px 0 #000;
+    width: min(720px, calc(100% - 36px));
+    margin: 32px auto 42px;
+    padding: 28px 30px 30px;
+    background: rgba(255, 255, 255, 0.96);
+    border: 4px solid #17120f;
+    border-radius: 16px;
+    box-shadow: 10px 10px 0 rgba(23, 18, 15, 0.92);
 }
-
 
 .profile-card {
-
     text-align: center;
 }
 
-
 .profile-avatar {
-
-    width: 100px;
-    height: 100px;
-
-    margin: 0 auto 20px;
-
+    width: 110px;
+    height: 110px;
+    margin: 0 auto 18px;
     display: flex;
-
     justify-content: center;
     align-items: center;
-
-    font-size: 50px;
-
-    background-color: #f4c531;
-
-    border: 4px solid #000;
-
+    font-size: 52px;
+    background: linear-gradient(180deg, #f6d35b 0%, #efbe2f 100%);
+    border: 4px solid #17120f;
     border-radius: 50%;
+    box-shadow: 4px 4px 0 rgba(23, 18, 15, 0.9);
 }
-
 
 .profile-card h2 {
-
-    margin-bottom: 10px;
-
+    margin: 0 0 8px;
+    font-size: clamp(1.8rem, 3vw, 2.2rem);
+    letter-spacing: -0.04em;
 }
 
-
 .profile-card p {
-
-    color: #555;
-
+    margin: 0;
+    color: #5f524d;
 }
 
 .profile-form {
-    margin-top: 25px;
-
+    margin-top: 22px;
     display: flex;
     flex-direction: column;
-
     gap: 12px;
 }
 
 .profile-form input,
 .profile-form textarea {
     width: 100%;
-
-    padding: 10px;
-
-    border: 2px solid #000;
-    border-radius: 5px;
-
-    font-family: "Roboto Mono", monospace;
+    padding: 10px 12px;
+    border: 2px solid #17120f;
+    border-radius: 8px;
+    background: #fff;
 }
 
 .profile-form textarea {
@@ -140,106 +64,72 @@ nav a {
 
 #edit-profile-btn,
 #save-profile-btn {
-    margin-top: 20px;
-
-    background-color: #f4c531;
-
-    border: 2px solid #000;
-    border-radius: 5px;
-
-    padding: 8px 12px;
-
-    font-weight: bold;
+    margin-top: 18px;
+    background: #f4d35f;
+    border: 2px solid #17120f;
+    border-radius: 8px;
+    padding: 9px 14px;
+    font-weight: 800;
     cursor: pointer;
 }
 
 #edit-profile-btn:hover,
 #save-profile-btn:hover {
     transform: translate(-1px, -1px);
-
-    box-shadow: 3px 3px 0 #000;
+    box-shadow: 3px 3px 0 #17120f;
 }
 
 .profile-artworks {
-    margin-top: 35px;
-
-    padding-top: 25px;
-
-    border-top: 3px solid #000;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 3px solid #17120f;
 }
-
 
 .profile-artworks h3 {
-    margin-bottom: 20px;
+    margin: 0 0 18px;
+    font-size: 1.15rem;
 }
-
 
 #profile-artwork-grid {
-
     display: grid;
-
-    grid-template-columns:
-        repeat(auto-fill, minmax(150px, 1fr));
-
-    gap: 20px;
-
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 18px;
 }
-
 
 .profile-artwork-card {
-
     padding: 12px;
-
-    background-color: #fff;
-
-    border: 3px solid #000;
-
-    border-radius: 5px;
-
-    box-shadow: 4px 4px 0 #000;
-
+    background: #fffdf9;
+    border: 3px solid #17120f;
+    border-radius: 10px;
+    box-shadow: 5px 5px 0 rgba(23, 18, 15, 0.9);
 }
-
 
 .profile-artwork-card canvas {
-
     display: block;
-
     width: 100%;
-
     height: auto;
-
     image-rendering: pixelated;
-
     margin-bottom: 10px;
-
+    border: 2px solid #17120f;
+    background: #fff;
 }
-
 
 .profile-artwork-card h4 {
-
-    margin-bottom: 6px;
-
+    margin: 0 0 6px;
     word-break: break-word;
-
 }
-
 
 .profile-artwork-card p {
-
     font-size: 13px;
-
+    margin: 0;
+    color: #5f524d;
 }
 
-
 .no-artwork {
-
-    padding: 25px;
-
-    border: 2px dashed #000;
-
+    padding: 24px 18px;
+    border: 2px dashed #17120f;
+    border-radius: 10px;
     text-align: center;
-
-    color: #666;
-
+    color: #5f524d;
+    background: rgba(255, 255, 255, 0.5);
 }

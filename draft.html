@@ -8,16 +8,20 @@
     <title>PIXORA - My Drafts</title>
 
     <link rel="stylesheet" href="css/draft.css">
+    <link rel="stylesheet" href="css/shared.css?v=2">
 </head>
 
 <body>
 
-    <nav>
-        <h1>👾 PIXORA</h1>
+        <nav>
+        <h1>PIXORA</h1>
 
         <ul>
             <li><a href="index.html">Studio</a></li>
-            <li><a href="draft.html">My Drafts</a></li>
+            <li><a href="feed.html">Public Feed</a></li>
+            <li><a href="draft.html" class="active">My Drafts</a></li>
+            <li><a href="profile.html">Profile</a></li>
+            <li><button id="logout-btn" type="button">Logout</button></li>
         </ul>
     </nav>
 
@@ -30,6 +34,13 @@
     </main>
 
     <script src="js/draft.js"></script>
+    <script>
+        const draftLogoutBtn = document.getElementById("logout-btn");
+        draftLogoutBtn?.addEventListener("click", () => {
+            localStorage.removeItem("logged_in_user");
+            window.location.href = "login.html";
+        });
+    </script>
 
 </body>
 

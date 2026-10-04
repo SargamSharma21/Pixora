@@ -1,352 +1,363 @@
 /* =====================================================
-   RESET
-===================================================== */
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Roboto Mono", monospace;
-}
-
-body {
-    background: #f4c531;
-    color: #000;
-    min-height: 100vh;
-}
-
-
-/* =====================================================
-   NAVBAR
-===================================================== */
-
-nav {
-    height: 72px;
-
-    background: #fff;
-
-    padding: 0 32px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    border-bottom: 4px solid #000;
-}
-
-nav h1 {
-    font-size: 21px;
-    font-weight: 800;
-    letter-spacing: -1px;
-}
-
-nav ul {
-    display: flex;
-    align-items: center;
-    gap: 22px;
-
-    list-style: none;
-}
-
-nav a {
-    color: #000;
-    text-decoration: none;
-
-    font-size: 13px;
-    font-weight: 700;
-}
-
-nav a:hover {
-    border-bottom: 3px solid #f4c531;
-    padding-bottom: 3px;
-}
-
-
-/* =====================================================
-   LOGOUT
-===================================================== */
-
-#logout-btn {
-    background: #f4c531;
-
-    border: 2px solid #000;
-    border-radius: 5px;
-
-    padding: 8px 14px;
-
-    font-size: 12px;
-    font-weight: 700;
-
-    cursor: pointer;
-
-    transition: 0.12s ease;
-}
-
-#logout-btn:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 3px 3px 0 #000;
-}
-
-
-/* =====================================================
    MAIN EDITOR CARD
 ===================================================== */
 
 .wrapper {
-    width: min(1100px, calc(100% - 48px));
-
-    margin: 38px auto 50px;
-
-    padding: 34px 38px 38px;
-
-    background: #fff;
-
-    border: 4px solid #000;
-    border-radius: 8px;
-
-    box-shadow: 9px 9px 0 #000;
+    width: min(1280px, calc(100% - 40px));
+    margin: 34px auto 48px;
+    padding: 26px 32px 30px;
+    background: rgba(255, 255, 255, 0.94);
+    border: 4px solid #17120f;
+    border-radius: 22px;
+    box-shadow: 10px 10px 0 rgba(23, 18, 15, 0.92);
 }
-
-
-/* =====================================================
-   EDITOR HEADER
-===================================================== */
 
 .editor-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-
-    margin-bottom: 28px;
+    gap: 16px;
+    margin-bottom: 22px;
 }
 
-.editor-header h2 {
-    font-size: 27px;
-    line-height: 1.15;
+.editor-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
-    letter-spacing: -1.5px;
+.toolbox-toggle {
+    min-height: 40px;
+    padding: 8px 14px;
+    background: #f4d35f;
+    border: 2px solid #17120f;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.editor-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
+    gap: 20px;
+    align-items: start;
+    transition: grid-template-columns 0.22s ease, gap 0.22s ease;
+}
+
+.editor-layout.collapsed {
+    grid-template-columns: 0fr minmax(0, 1fr);
+    gap: 0;
+}
+
+.editor-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    color: #f7f2e9;
+    background: #252422;
+    border: 2px solid #111;
+    border-radius: 8px;
+    padding: 16px;
+    min-width: 0;
+    overflow: hidden;
+    opacity: 1;
+    transition: opacity 0.16s ease, padding 0.22s ease, border-width 0.22s ease;
+}
+
+.editor-layout.collapsed .editor-sidebar {
+    visibility: hidden;
+    padding-left: 0;
+    padding-right: 0;
+    border-left-width: 0;
+    border-right-width: 0;
+    opacity: 0;
+}
+
+.editor-sidebar .editor-section {
+    margin-top: 0;
+    padding-top: 8px;
+    border-top: 1px solid #4b4945;
+}
+
+.editor-sidebar .editor-section:first-child {
+    padding-top: 0;
+    border-top: 0;
+}
+
+.editor-canvas-panel {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.canvas-section {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
 }
 
 .eyebrow {
-    margin-bottom: 6px;
-
+    margin: 0 0 6px;
+    color: #4d312d;
     font-size: 12px;
-    font-weight: 700;
+    font-weight: 900;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
 
-    letter-spacing: 1px;
+.editor-header h2 {
+    margin: 0;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.05em;
 }
 
 #user-display {
-    padding: 8px 11px;
-
-    background: #f4c531;
-
-    border: 2px solid #000;
-    border-radius: 4px;
-
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 12px;
+    background: #f5d867;
+    border: 2px solid #17120f;
+    border-radius: 6px;
     font-size: 11px;
-    font-weight: 700;
+    font-weight: 800;
 }
 
-
-/* =====================================================
-   ARTWORK TITLE
-===================================================== */
-
 .title-meta {
-    margin-bottom: 30px;
+    margin-bottom: 22px;
 }
 
 .title-meta label {
     display: block;
-
     margin-bottom: 8px;
-
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 800;
 }
 
 .title-meta input {
     width: 100%;
-
-    height: 44px;
-
-    padding: 0 13px;
-
-    background: #fff;
-
-    border: 2px solid #000;
-    border-radius: 5px;
-
-    outline: none;
-
-    font-size: 13px;
+    height: 46px;
+    padding: 0 14px;
+    background: var(--paper);
+    border: 2px solid #17120f;
+    border-radius: 8px;
+    font-size: 14px;
     font-weight: 600;
+    color: var(--ink);
 }
 
 .title-meta input:focus {
-    box-shadow: 4px 4px 0 #f4c531;
+    box-shadow: 4px 4px 0 #f0c63b;
 }
-
-
-/* =====================================================
-   COMMON SECTION
-===================================================== */
 
 .editor-section,
 .palette-section,
 .canvas-section {
-    padding-top: 24px;
-    margin-top: 24px;
-
-    border-top: 2px solid #e5e5e5;
+    margin-top: 22px;
+    padding-top: 22px;
+    border-top: 2px solid #e6d5a4;
 }
 
 .section-heading {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    margin-bottom: 16px;
+    gap: 12px;
+    margin-bottom: 18px;
 }
 
 .section-heading h3 {
+    margin: 0;
     font-size: 15px;
-    font-weight: 800;
-
+    font-weight: 900;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-
-    letter-spacing: 0.5px;
 }
 
 .section-heading span {
-    color: #666;
-
+    color: var(--muted);
     font-size: 11px;
 }
 
-
-/* =====================================================
-   GRID SETTINGS
-===================================================== */
-
 .grid-settings {
     display: grid;
-
-    grid-template-columns: 1fr 1fr;
-
-    gap: 35px;
-
+    grid-template-columns: 1fr;
+    gap: 20px;
     margin-bottom: 18px;
 }
 
 .slider-control {
     display: grid;
-
-    grid-template-columns: 55px 1fr 32px;
-
+    grid-template-columns: minmax(0, 1fr) 48px;
     align-items: center;
-
-    gap: 12px;
+    column-gap: 12px;
+    row-gap: 4px;
 }
 
-.slider-control label {
-    font-size: 12px;
-    font-weight: 700;
+.slider-control input[type="range"],
+.slider input[type="range"] {
+    width: 100%;
+    height: 34px;
+    margin: 0;
+    accent-color: #f4d35f;
+    cursor: pointer;
+    touch-action: pan-y;
 }
 
 .slider-control input[type="range"] {
-    width: 100%;
-
-    accent-color: #000;
-
-    cursor: pointer;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    appearance: none;
+    background: transparent;
 }
 
-.slider-control span {
-    padding: 4px 5px;
-
-    background: #f4c531;
-
-    border: 2px solid #000;
-    border-radius: 3px;
-
-    text-align: center;
-
-    font-size: 11px;
-    font-weight: 700;
+.slider-control input[type="range"]::-webkit-slider-runnable-track,
+.slider input[type="range"]::-webkit-slider-runnable-track {
+    height: 10px;
+    background: #77746e;
+    border: 1px solid #99958d;
+    border-radius: 10px;
 }
 
-
-/* =====================================================
-   BUTTON BASE
-===================================================== */
-
-button {
-    font-family: inherit;
-
-    cursor: pointer;
-
-    transition:
-        transform 0.12s ease,
-        box-shadow 0.12s ease,
-        background 0.12s ease;
+.slider-control input[type="range"]::-webkit-slider-thumb,
+.slider input[type="range"]::-webkit-slider-thumb {
+    width: 24px;
+    height: 24px;
+    margin-top: -8px;
+    appearance: none;
+    background: #f4d35f;
+    border: 2px solid #111;
+    border-radius: 50%;
 }
 
-button:hover {
-    transform: translate(-2px, -2px);
-
-    box-shadow: 3px 3px 0 #000;
+.slider-control input[type="range"]::-moz-range-track,
+.slider input[type="range"]::-moz-range-track {
+    height: 10px;
+    background: #77746e;
+    border: 1px solid #99958d;
+    border-radius: 10px;
 }
 
-button:active {
-    transform: translate(0, 0);
-
-    box-shadow: none;
+.slider-control input[type="range"]::-moz-range-thumb,
+.slider input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #f4d35f;
+    border: 2px solid #111;
+    border-radius: 50%;
 }
 
-
-/* =====================================================
-   CREATE GRID
-===================================================== */
-
-#create-grid,
-#submit-grid {
-    background: #f4c531;
-
-    border: 2px solid #000;
-    border-radius: 5px;
-
-    padding: 9px 15px;
-
-    font-size: 12px;
+.slider-control label {
+    color: #f7f2e9;
+    font-size: 13px;
     font-weight: 800;
 }
 
+.slider-control span,
+.slider span {
+    color: #17120f;
+}
 
-/* =====================================================
-   TOOLS
-===================================================== */
+.slider-control span,
+.slider span {
+    min-width: 42px;
+    padding: 5px 7px;
+    background: #f5d867;
+    border: 2px solid #17120f;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.slider {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 48px;
+    align-items: center;
+    column-gap: 12px;
+    row-gap: 4px;
+    margin-bottom: 18px;
+}
+
+.slider label {
+    color: #f7f2e9;
+    font-size: 13px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.slider input[type="range"] {
+    grid-column: 1 / -1;
+    grid-row: 2;
+}
+
+.slider-control span,
+.slider span {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.editor-sidebar .section-heading h3 {
+    color: #f7f2e9;
+}
+
+.editor-sidebar .section-heading span {
+    color: #c4c0b8;
+}
+
+.editor-sidebar .palette-container {
+    background: #33312e;
+    border-color: #77746e;
+}
+
+#create-grid,
+#submit-grid,
+#fetch-palette-btn,
+#clear-grid,
+.editControls,
+.palette-btn,
+.action-wrapper button,
+#save-draft-btn,
+#post-art-btn,
+#download-png-btn,
+#share-art-btn {
+    border: 2px solid #17120f;
+    border-radius: 8px;
+    font-weight: 800;
+}
+
+#create-grid,
+#submit-grid {
+    background: #f4d35f;
+    color: var(--ink);
+    padding: 9px 16px;
+    font-size: 12px;
+}
 
 .tool-bar {
     display: flex;
-
+    flex-wrap: wrap;
     align-items: center;
-
     gap: 9px;
 }
 
+.color-wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+}
+
 #color-input {
-    width: 42px;
+    width: 40px;
     height: 38px;
-
-    padding: 2px;
-
+    padding: 3px;
+    border: 2px solid #17120f;
+    border-radius: 6px;
     background: #fff;
-
-    border: 2px solid #000;
-    border-radius: 5px;
-
     cursor: pointer;
 }
 
@@ -354,823 +365,199 @@ button:active {
     padding: 0;
 }
 
-#color-input::-webkit-color-swatch {
-    border: 0;
-    border-radius: 2px;
-}
-
+#color-input::-webkit-color-swatch,
 #color-input::-moz-color-swatch {
     border: 0;
-    border-radius: 2px;
+    border-radius: 3px;
 }
-
-
-/* =====================================================
-   PAINT / ERASE / CLEAR
-===================================================== */
 
 .editControls {
     min-height: 38px;
-
     padding: 8px 14px;
-
     background: #fff;
-
-    border: 2px solid #000;
-    border-radius: 5px;
-
+    color: var(--ink);
     font-size: 12px;
-    font-weight: 700;
 }
 
 .editControls:hover {
-    background: #f4c531;
+    background: #f7d869;
 }
 
 .selectedEditControl {
-    background: #f4c531;
-
-    border: 2px solid #000;
-
-    box-shadow: 3px 3px 0 #000;
+    background: #f4d35f !important;
+    color: var(--ink) !important;
+    box-shadow: 2px 2px 0 #17120f;
 }
-
-
-/* =====================================================
-   PALETTE
-===================================================== */
 
 .palette-section {
     position: relative;
 }
 
-.palette-header {
-    display: flex;
-
-    align-items: center;
-    justify-content: space-between;
-
-    margin-bottom: 14px;
-}
-
-.palette-header h3 {
-    margin: 0;
-}
-
-.palette-header p {
-    margin-top: 5px;
-
-    color: #666;
-
+#fetch-palette-btn,
+.palette-btn {
+    background: #f4d35f;
+    color: var(--ink);
+    padding: 7px 12px;
     font-size: 11px;
 }
-
-#random-palette,
-#random-palette-btn {
-    padding: 8px 12px;
-
-    background: #f4c531;
-
-    border: 2px solid #000;
-    border-radius: 5px;
-
-    font-size: 11px;
-    font-weight: 700;
-}
-
-
-/* palette container */
 
 .palette-container {
-    min-height: 68px;
-
-    padding: 12px;
-
+    min-height: 66px;
     display: flex;
     align-items: center;
-
     gap: 10px;
-
-    background: #fafafa;
-
-    border: 2px solid #000;
-    border-radius: 5px;
-
+    padding: 12px;
+    background: #f9f4ec;
+    border: 2px solid #17120f;
+    border-radius: 8px;
     overflow-x: auto;
 }
 
-
-/*
-   Dynamic palette swatches.
-
-   These rules work whether your JS creates
-   buttons or div/span swatches.
-*/
-
 .palette-container button {
-    width: 42px;
-    height: 42px;
-
+    width: 34px;
+    min-width: 34px;
+    height: 34px;
+    min-height: 34px;
     flex-shrink: 0;
-
+    border: 2px solid #17120f;
+    border-radius: 6px;
     padding: 0;
-
-    border: 3px solid #000;
-    border-radius: 4px;
-
     box-shadow: none;
 }
 
 .palette-container button:hover {
-    transform: translateY(-3px);
-
-    box-shadow: 3px 3px 0 #000;
+    transform: translateY(-2px);
+    box-shadow: 2px 2px 0 #17120f;
 }
-
-
-/* =====================================================
-   CANVAS SECTION
-===================================================== */
-
-.canvas-section {
-    margin-top: 28px;
-
-    padding-top: 26px;
-}
-
-.canvas-header {
-    display: flex;
-
-    align-items: flex-end;
-    justify-content: space-between;
-
-    margin-bottom: 14px;
-}
-
-.canvas-header h3 {
-    margin: 0;
-}
-
-.canvas-header p {
-    color: #666;
-
-    font-size: 11px;
-}
-
-
-/* =====================================================
-   CANVAS CONTAINER
-===================================================== */
 
 .container {
     width: 100%;
-
-    min-height: 430px;
-
-    padding: 28px;
-
+    min-height: 460px;
+    max-height: 72vh;
+    padding: 22px;
     display: flex;
-    align-items: center;
-    justify-content: center;
-
+    align-items: flex-start;
+    justify-content: flex-start;
     overflow: auto;
-
-    background: #fff;
-
-    border: 2px dashed #000;
-
-    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.92);
+    border: 2px dashed #17120f;
+    border-radius: 12px;
+    scrollbar-width: thin;
+    scrollbar-color: #17120f #f3e5bf;
 }
-
-
-/*
-   IMPORTANT:
-   No CSS background grid.
-   The Canvas API itself draws the grid.
-*/
 
 .container canvas {
     display: block;
-
-    max-width: 100%;
+    flex: 0 0 auto;
+    margin: auto;
+    max-width: none;
+    max-height: none;
+    width: auto;
     height: auto;
-
     background: #fff;
-
-    border: 3px solid #000;
-
-    box-shadow: 6px 6px 0 #000;
-
+    border: 3px solid #17120f;
+    box-shadow: 4px 4px 0 rgba(23, 18, 15, 0.18);
     image-rendering: pixelated;
     image-rendering: crisp-edges;
-    cursor: crosshair;
-
     touch-action: none;
 }
 
-
-/* =====================================================
-   ACTIONS
-===================================================== */
-
 .action-wrapper {
     display: flex;
-
     align-items: center;
-
-    gap: 10px;
-
-    margin-top: 22px;
-}
-
-.action-wrapper button {
-    min-height: 39px;
-
-    padding: 8px 15px;
-
-    border: 2px solid #000;
-    border-radius: 5px;
-
-    font-size: 12px;
-    font-weight: 800;
-}
-
-
-/* Save */
-
-#save-draft-btn {
-    background: #fff;
-}
-
-
-/* Publish */
-
-#publish-btn {
-    background: #000;
-    color: #fff;
-}
-
-#publish-btn:hover {
-    background: #f4c531;
-    color: #000;
-}
-
-
-/* Download */
-
-#download-btn {
-    background: #fff;
-}
-
-
-/* Share */
-
-#share-btn {
-    background: #f4c531;
-}
-
-
-/* =====================================================
-   OPTIONAL ACTION CLASSES
-===================================================== */
-
-.btn-primary {
-    background: #000;
-    color: #fff;
-
-    border: 2px solid #000;
-}
-
-.btn-primary:hover {
-    background: #f4c531;
-    color: #000;
-}
-
-.btn-secondary {
-    background: #fff;
-    color: #000;
-
-    border: 2px solid #000;
-}
-
-
-/* =====================================================
-   RESPONSIVE
-===================================================== */
-
-@media (max-width: 800px) {
-
-    nav {
-        height: auto;
-
-        padding: 15px 18px;
-
-        gap: 14px;
-    }
-
-    nav ul {
-        gap: 12px;
-    }
-
-    .wrapper {
-        width: calc(100% - 28px);
-
-        padding: 25px 20px 30px;
-
-        margin: 25px auto 35px;
-    }
-
-    .editor-header {
-        align-items: flex-start;
-
-        flex-direction: column;
-
-        gap: 12px;
-    }
-
-    .grid-settings {
-        grid-template-columns: 1fr;
-
-        gap: 16px;
-    }
-
-    .container {
-        min-height: 320px;
-
-        padding: 15px;
-    }
-}
-
-
-@media (max-width: 520px) {
-
-    nav {
-        flex-direction: column;
-    }
-
-    nav ul {
-        flex-wrap: wrap;
-
-        justify-content: center;
-    }
-
-    .wrapper {
-        width: calc(100% - 18px);
-
-        padding: 20px 15px 25px;
-
-        box-shadow: 5px 5px 0 #000;
-    }
-
-    .editor-header h2 {
-        font-size: 23px;
-    }
-
-    .tool-bar {
-        flex-wrap: wrap;
-    }
-
-    .action-wrapper {
-        flex-wrap: wrap;
-    }
-
-    .action-wrapper button {
-        flex: 1;
-    }
-}
-
-/* =====================================================
-   PIXEL STUDIO - CURRENT EDITOR POLISH
-   ===================================================== */
-
-.options {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-}
-
-
-/* -------------------------
-   GRID CONTROLS
-------------------------- */
-
-.options > .opt-wrapper:first-child {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 28px;
-
-    margin-bottom: 18px;
-}
-
-.slider {
-    display: grid;
-    grid-template-columns: 82px minmax(120px, 1fr) 42px;
-    align-items: center;
-    gap: 12px;
-}
-
-.slider label {
-    font-size: 11px;
-    font-weight: 700;
-    white-space: nowrap;
-}
-
-.slider input[type="range"] {
-    width: 100%;
-    accent-color: #111;
-    cursor: pointer;
-}
-
-.slider span {
-    min-width: 42px;
-
-    padding: 5px 7px;
-
-    background: #f4c531;
-
-    border: 2px solid #111;
-    border-radius: 4px;
-
-    text-align: center;
-
-    font-size: 11px;
-    font-weight: 700;
-}
-
-
-/* -------------------------
-   GRID / TOOL BUTTON ROW
-------------------------- */
-
-.options > .opt-wrapper:nth-child(2) {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-
-    margin-bottom: 24px;
-    padding-bottom: 24px;
-
-    border-bottom: 1px solid #ddd;
-}
-
-.options > .opt-wrapper:nth-child(2) button {
-    min-height: 36px;
-
-    padding: 7px 13px;
-
-    background: #fff;
-
-    color: #111;
-
-    border: 2px solid #111;
-    border-radius: 4px;
-
-    font-family: inherit;
-    font-size: 11px;
-    font-weight: 700;
-
-    cursor: pointer;
-
-    transition:
-        transform 0.1s ease,
-        box-shadow 0.1s ease,
-        background 0.1s ease;
-}
-
-.options > .opt-wrapper:nth-child(2) button:hover {
-    background: #f4c531;
-
-    transform: translateY(-1px);
-
-    box-shadow: 2px 2px 0 #111;
-}
-
-.options > .opt-wrapper:nth-child(2) #submit-grid {
-    background: #111;
-    color: #fff;
-}
-
-.options > .opt-wrapper:nth-child(2) #submit-grid:hover {
-    background: #333;
-}
-
-
-/* -------------------------
-   COLOR PICKER
-------------------------- */
-
-#color-input {
-    width: 38px;
-    height: 38px;
-
-    padding: 3px;
-
-    background: #fff;
-
-    border: 2px solid #111;
-    border-radius: 4px;
-
-    cursor: pointer;
-}
-
-#color-input::-webkit-color-swatch-wrapper {
-    padding: 0;
-}
-
-#color-input::-webkit-color-swatch {
-    border: none;
-    border-radius: 2px;
-}
-
-
-/* -------------------------
-   SELECTED TOOL
-------------------------- */
-
-.selectedEditControl {
-    background: #f4c531 !important;
-    color: #111 !important;
-
-    border-color: #111 !important;
-
-    box-shadow: 2px 2px 0 #111;
-}
-
-
-/* -------------------------
-   PALETTE
-------------------------- */
-
-.options > .opt-wrapper:nth-child(3) {
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: stretch;
-
-    gap: 10px;
-
-    margin-bottom: 24px;
-    padding-bottom: 24px;
-
-    border-bottom: 1px solid #ddd;
-}
-
-.options > .opt-wrapper:nth-child(3) > div:first-child {
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    width: 100%;
-}
-
-#fetch-palette-btn {
-    padding: 7px 12px;
-
-    background: #fff !important;
-    color: #111 !important;
-
-    border: 2px solid #111;
-    border-radius: 4px;
-
-    font-family: inherit;
-    font-size: 11px;
-    font-weight: 700;
-
-    cursor: pointer;
-}
-
-#fetch-palette-btn:hover {
-    background: #f4c531 !important;
-
-    transform: translateY(-1px);
-
-    box-shadow: 2px 2px 0 #111;
-}
-
-#palette-status {
-    font-size: 10px !important;
-    color: #777 !important;
-}
-
-#palette-container {
-    min-height: 58px;
-
-    width: 100%;
-
-    padding: 9px;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 9px;
-
-    background: #fafafa;
-
-    border: 2px solid #111;
-    border-radius: 5px;
-}
-
-#palette-container:empty::before {
-    content: "Your random palette will appear here";
-
-    color: #999;
-
-    font-size: 10px;
-}
-
-#palette-container button {
-    width: 34px !important;
-    height: 34px !important;
-
-    flex-shrink: 0;
-
-    border: 2px solid #111 !important;
-    border-radius: 4px !important;
-
-    cursor: pointer;
-
-    transition:
-        transform 0.1s ease,
-        box-shadow 0.1s ease;
-}
-
-#palette-container button:hover {
-    transform: translateY(-2px);
-
-    box-shadow: 2px 2px 0 #111;
-}
-
-
-/* -------------------------
-   ACTION BUTTONS
-------------------------- */
-
-.action-wrapper {
-    display: flex;
-
-    align-items: center;
-
-    gap: 8px;
-
     flex-wrap: wrap;
-
-    margin-bottom: 25px;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 24px;
 }
 
 .action-wrapper button {
-    min-height: 36px;
-
-    padding: 7px 13px;
-
-    border: 2px solid #111;
-    border-radius: 4px;
-
-    font-family: inherit;
-    font-size: 11px;
-    font-weight: 700;
-
-    cursor: pointer;
-
-    transition:
-        transform 0.1s ease,
-        box-shadow 0.1s ease;
-}
-
-.action-wrapper button:hover {
-    transform: translateY(-1px);
-
-    box-shadow: 2px 2px 0 #111;
+    min-height: 38px;
+    padding: 8px 14px;
+    font-size: 12px;
 }
 
 .action-wrapper .btn-secondary {
     background: #fff;
-    color: #111;
+    color: var(--ink);
 }
 
-.action-wrapper .btn-primary {
+.action-wrapper .btn-primary,
+#post-art-btn {
     background: #111;
     color: #fff;
 }
 
-
-/* Override the inline colors on the HTML buttons */
-
-#download-png-btn {
-    background: #fff !important;
-    color: #111 !important;
+#download-png-btn,
+#share-art-btn {
+    background: #fff;
+    color: var(--ink);
 }
 
 #share-art-btn {
-    background: #f4c531 !important;
-    color: #111 !important;
+    background: #f4d35f;
 }
 
-
-/* -------------------------
-   CANVAS AREA
-------------------------- */
-
-.container {
-    min-height: 430px;
-
-    padding: 28px;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    overflow: auto;
-
-    background: #fff;
-
-    border: 2px dashed #111;
-
-    border-radius: 5px;
-}
-
-
-/*
-   IMPORTANT:
-   No checkerboard / decorative CSS
-   background behind the canvas.
-*/
-
-.container canvas {
-    display: block;
-
-    max-width: 100%;
-    height: auto;
-
-    background: #fff;
-
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
-
-    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.18);
-
-    touch-action: none;
-}
-
-
-/* -------------------------
-   RESPONSIVE
-------------------------- */
-
-@media (max-width: 750px) {
-
-    .options > .opt-wrapper:first-child {
+@media (max-width: 980px) {
+    .editor-layout {
         grid-template-columns: 1fr;
-        gap: 14px;
+        gap: 16px;
     }
 
-    .options > .opt-wrapper:nth-child(2) {
+    .editor-sidebar {
+        order: 1;
+    }
+
+    .editor-canvas-panel {
+        order: 2;
+    }
+
+    .editor-layout.collapsed {
+        grid-template-columns: 1fr;
+    }
+
+    .editor-layout.collapsed .editor-sidebar {
+        display: none;
+    }
+}
+
+@media (max-width: 800px) {
+    .wrapper {
+        width: calc(100% - 24px);
+        padding: 22px 18px 24px;
+        margin: 24px auto 30px;
+    }
+
+    .editor-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .container {
+        min-height: 320px;
+        max-height: 64vh;
+        padding: 14px;
+    }
+}
+
+@media (max-width: 520px) {
+    .wrapper {
+        width: calc(100% - 16px);
+        padding: 20px 14px 22px;
+        box-shadow: 6px 6px 0 rgba(23, 18, 15, 0.9);
+    }
+
+    .tool-bar,
+    .action-wrapper {
         flex-wrap: wrap;
     }
 
     .action-wrapper {
-        display: grid;
-
-        grid-template-columns: 1fr 1fr;
+        justify-content: stretch;
     }
 
     .action-wrapper button {
-        width: 100%;
+        width: calc(50% - 6px);
+        flex: 1 1 40%;
     }
-}
-
-.container {
-    min-height: 380px;
-
-    padding: 32px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    overflow: auto;
-
-    background: #fff;
-
-    border: 2px dashed #111;
-    border-radius: 5px;
-}
-
-.container canvas {
-    display: block;
-
-    max-width: none;
-    max-height: none;
-
-    background: #fff;
-
-    image-rendering: pixelated;
-
-    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.18);
-
-    touch-action: none;
 }
